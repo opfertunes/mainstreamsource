@@ -9,7 +9,7 @@
             data-aos-delay="400"
           >
             <h1 class="text-white">{{ genre.title }}&nbsp;{{ id }}</h1>
-            <p>Brwowse and listen to music from the list below.</p>
+            <p>Browse and listen to music from the list below.</p>
           </div>
         </div>
       </template>

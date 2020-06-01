@@ -103,7 +103,9 @@ export const MusicPlayer = (__index, songEnd) => {
           sound = data.howl;
         } else {
           sound = data.howl = new Howl({
-            src: ["http://www.largesound.com/ashborytour/sound/AshboryBYU.mp3"],
+            src: [
+              "https://521dimensions.com/song/Ancient Astronauts - Risin' High (feat Raashan Ahmad).mp3",
+            ],
             html5: true, // Force to HTML5 so that the audio can stream in (best for large files).
             loop: false,
             onplay: function() {
