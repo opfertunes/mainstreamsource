@@ -1,28 +1,31 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <router-view :key="$route.path"></router-view>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
 export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
-}
+  name: "App",
+  components: {}
+};
 </script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+<style lang="scss">
+@import url("https://fonts.googleapis.com/css?family=Nunito+Sans:200,300,400,700,900|Oswald:400,700");
+@import "./assets/fonts/icomoon/style.css";
+@import "./assets/css/bootstrap.min.css";
+@import "./assets/css/magnific-popup.css";
+// @import "./assets/css/jquery-ui.css";
+@import "./assets/css/owl.carousel.min.css";
+@import "./assets/css/bootstrap-datepicker.css";
+// @import "./assets/css/mediaelementplayer.css";
+@import "./assets/css/animate.css";
+@import "./assets/fonts/flaticon/font/flaticon.css";
+@import "./assets/css/fl-bigmug-line.css";
+@import "./assets/css/aos.css";
+@import "./assets/css/style.css";
+@import "./assets/css/custom.css";
+@import "./assets/css/MusicPlayer.css";
+@import "./assets/fonts/fa/css/font-awesome.min.css";
 </style>
