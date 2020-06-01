@@ -186,13 +186,13 @@ export default {
         document.getElementById("pauseBtn" + id).click();
         setTimeout(() => {
           window["$"]("#pauseBtn" + id).css("display", "none");
-        }, 100);
+        }, 300);
         document.getElementById("playBtn" + (id * 1 + 1)).click();
       } else {
         document.getElementById("pauseBtn" + id).click();
         setTimeout(() => {
           window["$"]("#pauseBtn" + id).css("display", "none");
-        }, 100);
+        }, 300);
       }
       console.log("songend", id);
     };
