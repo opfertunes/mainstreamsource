@@ -17,141 +17,50 @@
         <div class="site-section">
           <div class="container">
             <div
-              class="d-block d-md-flex podcast-entry bg-white mb-5"
+              class="d-block d-md-flex podcast-entry bg-white mb-5 main-song-container"
               data-aos="fade-up"
               v-for="(song, index) in songs"
               :key="index"
             >
-              <div
-                class="image"
-                :style="{
-                  backgroundImage: `url(${require(`@/assets/images/img_1.jpg`)})`,
-                }"
-              ></div>
-              <div class="text">
-                <h3 class="font-weight-light" style="margin-top: -28px;">
-                  <a href="#">{{ song.title }}{{ index + 1 }}</a>
-                </h3>
-                <div class="mb-4 text-black">
-                  <div class="row">
-                    <div class="col-md-2">
-                      <div class="controlsOuter">
-                        <div class="controlsInner">
-                          <div :id="`loading${index}`" class="loading"></div>
-                          <div
-                            class="btn playBtn"
-                            :id="`playBtn${index}`"
-                          ></div>
-                          <div
-                            class="btn pauseBtn"
-                            :id="`pauseBtn${index}`"
-                          ></div>
-                          <div
-                            class="btn prevBtn"
-                            style="display:none"
-                            :id="`prevBtn${index}`"
-                          ></div>
-                          <div
-                            class="btn nextBtn"
-                            style="display:none"
-                            :id="`nextBtn${index}`"
-                          ></div>
-                        </div>
-                        <div
-                          class="btn playlistBtn"
-                          style="display:none"
-                          :id="`playlistBtn${index}`"
-                        ></div>
-                        <div
-                          class="btn volumeBtn"
-                          :id="`volumeBtn${index}`"
-                        ></div>
-                      </div>
+              <div class="text" style="padding: 22px;">
+                <div class="row">
+                  <div class="col-sm-12">
+                    <h3 class="font-weight-light" style="margin-top: -28px;">
+                      <a style="font-size: 16px; color: #e3207b;"
+                        >{{ song.title }}{{ index + 1 }}</a
+                      >
+                    </h3>
+                  </div>
+                  <div class="cntrl-container">
+                    <i
+                      class="fa fa-play-circle play-btn"
+                      aria-hidden="true"
+                      v-on:click="playMusic(index)"
+                      v-if="!loading[index] && playIndex != index"
+                      :key="componentKey"
+                    ></i>
+                    <i
+                      class="fa fa-pause play-btn"
+                      aria-hidden="true"
+                      v-on:click="stopMusic(index)"
+                      v-if="!loading[index] && playIndex == index"
+                      :key="componentKey"
+                    ></i>
+                    <i
+                      class="fa fa-spinner fa-spin fa-fw play-btn"
+                      v-if="loading[index] === true"
+                      :key="componentKey"
+                    ></i>
+                  </div>
+                  <div class="col-sm">
+                    <div class="waveform_container">
+                      <div :id="`waveform_${index}`"></div>
                     </div>
-                    <div class="col-md-10">
-                      <div :id="`waveform${index}`" class="waveform"></div>
-                      <div :id="`bar${index}`" class="bar"></div>
-                      <div :id="`progress${index}`" class="progress"></div>
-                    </div>
-                  </div>
-                  <div :id="`title${index}`" class="">
-                    <span
-                      :id="`track${index}`"
-                      style="display:none"
-                      class="track"
-                    ></span>
-                    <div :id="`timer${index}`" class="timer">0:00</div>
-                    <div :id="`duration${index}`" class="duration">0:00</div>
-                  </div>
-
-                  <!-- Controls -->
-
-                  <!-- Progress -->
-
-                  <!-- Playlist -->
-                  <div
-                    style="display:none"
-                    :id="`playlist${index}`"
-                    class="playlist"
-                  >
-                    <div :id="`list${index}`" class="list"></div>
-                  </div>
-
-                  <!-- Volume -->
-                  <div :id="`volume${index}`" class="fadeout volume">
-                    <div :id="`barFull${index}`" class="barFull"></div>
-                    <div :id="`barEmpty${index}`" class="barEmpty"></div>
-                    <div :id="`sliderBtn${index}`" class="sliderBtn"></div>
                   </div>
                 </div>
-
-                <!-- <div class="player">
-                <audio
-                  id="player2"
-                  preload="none"
-                  controls
-                  style="max-width: 100%"
-                >
-                  <source
-                    src="http://www.largesound.com/ashborytour/sound/AshboryBYU.mp3"
-                    type="audio/mp3"
-                  />
-                </audio>
-              </div> -->
               </div>
             </div>
           </div>
-          <!-- <div class="container" data-aos="fade-up">
-          <div class="row">
-            <div class="col-md-12 text-center">
-              <div class="site-block-27">
-                <ul>
-                  <li>
-                    <a href="#">&lt;</a>
-                  </li>
-                  <li class="active">
-                    <span>1</span>
-                  </li>
-                  <li>
-                    <a href="#">2</a>
-                  </li>
-                  <li>
-                    <a href="#">3</a>
-                  </li>
-                  <li>
-                    <a href="#">4</a>
-                  </li>
-                  <li>
-                    <a href="#">5</a>
-                  </li>
-                  <li>
-                    <a href="#">&gt;</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div> -->
         </div>
       </template>
     </BaseLayoutCommon>
@@ -160,10 +69,10 @@
 
 <script>
 import BaseLayoutCommon from "./../layouts/BaseLayoutCommon";
-import { MusicPlayer } from "./../libs/MusicPlayer";
-import { SiriWave } from "./../libs/SiriWave";
+import WaveSurfer from "wavesurfer.js";
 import songs from "./../../data/songList";
 import genres from "./../../data/genre";
+import { HomePageJs } from "./../libs/HomePageJs";
 
 export default {
   name: "TrackList",
@@ -175,52 +84,86 @@ export default {
   },
   data() {
     return {
-      songs,
+      songs: [],
       genre: genres[this.$route.params.id - 1],
       id: this.$route.params.id,
+      playIndex: -1,
+      loading: [],
+      players: [],
+      componentKey: 0,
     };
   },
+  created() {},
   mounted() {
-    let songEnd = (id) => {
-      if (id <= songs.length - 1) {
-        document.getElementById("pauseBtn" + id).click();
-        setTimeout(() => {
-          window["$"]("#pauseBtn" + id).css("display", "none");
-        }, 300);
-        document.getElementById("playBtn" + (id * 1 + 1)).click();
-      } else {
-        document.getElementById("pauseBtn" + id).click();
-        setTimeout(() => {
-          window["$"]("#pauseBtn" + id).css("display", "none");
-        }, 300);
-      }
-      console.log("songend", id);
-    };
+    setTimeout(() => {
+      HomePageJs();
+    }, 1000);
     let promises = [];
-    songs.forEach((song, index) => {
+    let _self = this;
+    songs.forEach((song) => {
       promises.push(
         new Promise((resolve) => {
-          MusicPlayer(index, songEnd);
-          console.log(index, "index");
-          resolve({});
+          this.loading.push(true);
+          return resolve(song);
         })
       );
     });
-    Promise.all(promises).then(() => {
-      SiriWave();
+    Promise.all(promises).then((songs) => {
+      this.songs = songs;
+      _self = this;
+      setTimeout(() => {
+        for (let index = 0; index < songs.length; index++) {
+          let song = _self.songs[index];
+          let wavesurfer = WaveSurfer.create({
+            container: "#waveform_" + index,
+            waveColor: "white",
+            progressColor: "#e3207b",
+            barHeight: 1,
+            height: 40,
+          });
+          wavesurfer.on("ready", function() {
+            _self.loading[index] = false;
+            setTimeout(() => {
+              _self.loading[index] = false;
+              _self.componentKey++;
+            }, 3000);
+          });
+          wavesurfer.on("finish", function() {
+            _self.songs.forEach((song, index) => {
+              _self.players[index].stop();
+            });
+            if (index < _self.players.length - 1) {
+              _self.players[index + 1].play();
+              _self.playIndex = index + 1;
+            } else if (index == _self.players.length - 1) {
+              _self.playIndex = -1;
+            }
+          });
+          wavesurfer.load(song.trackUrl);
+          _self.players.push(wavesurfer);
+        }
+      }, 1000);
     });
-
-    setTimeout(() => {
-      //   const sound = new Howl({
-      //     src: ["http://www.largesound.com/ashborytour/sound/AshboryBYU.mp3", ""],
-      //   });
-    }, 1200);
-
-    // Play the sound.
-    //sound.play();
-
-    // Change global volume.
-    //Howler.volume(0.5);
+  },
+  methods: {
+    playMusic: function(i) {
+      this.songs.forEach((song, index) => {
+        if (i != index) {
+          this.players[index].stop();
+        }
+      });
+      this.players[i].play();
+      this.playIndex = i;
+    },
+    stopMusic: function(i) {
+      this.players[i].playPause();
+      this.playIndex = -1;
+    },
+  },
+  destroyed() {
+    this.songs.forEach((song, index) => {
+      this.players[index].stop();
+    });
   },
 };
 </script>

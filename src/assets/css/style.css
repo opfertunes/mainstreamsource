@@ -2385,3 +2385,48 @@ figure figcaption {
   color: #fff;
   background: #e3207b;
 }
+
+.search-box {
+  top: 54px;
+}
+
+.serarch-btn {
+  background: #e3207b;
+  color: white;
+}
+
+.play-btn {
+  position: absolute;
+}
+
+.main-song-container {
+  height: auto !important;
+  margin-bottom: 10px !important;
+}
+
+.cntrl-container {
+  font-size: 42px;
+  width: 42px;
+  float: left;
+  position: relative;
+  height: 43px;
+  left: 15px;
+}
+
+.text {
+  width: 100% !important;
+}
+
+.waveform_container {
+  width: 95%;
+  float: left;
+  position: relative;
+}
+
+.unit-9 {
+  height: 160px !important;
+}
+
+.unit-9 .image {
+  height: 160px !important;
+}

@@ -3,9 +3,12 @@ import App from "./App.vue";
 import VueRouter from "vue-router";
 import HomePage from "./components/controllers/HomePage";
 import TrackList from "./components/controllers/TrackList";
+import vSelect from "vue-select";
+import "vue-select/dist/vue-select.css";
 
 Vue.config.productionTip = false;
 
+Vue.component("v-select", vSelect);
 Vue.use(VueRouter);
 
 const routes = [
