@@ -2418,15 +2418,86 @@ figure figcaption {
 }
 
 .waveform_container {
-  width: 95%;
+  width: 100%;
   float: left;
   position: relative;
+  overflow: hidden;
 }
 
 .unit-9 {
   height: 160px !important;
+  cursor: pointer;
 }
 
 .unit-9 .image {
   height: 160px !important;
+}
+
+.genre-box {
+  z-index: 1;
+}
+
+.selected-box {
+  z-index: 100;
+}
+
+.inner-selected-box {
+  z-index: 101;
+  animation: smallBox 0.25s;
+  animation-fill-mode: forwards;
+}
+
+.hidden-box {
+  width: 540px;
+  position: absolute;
+  height: 330px;
+  background: rgba(90, 90, 90, 0.97);
+  z-index: 100;
+  top: 0;
+  border-radius: 7px;
+  padding-left: 261px;
+  padding-top: 6px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  animation: createBoxDown 0.25s;
+  animation-fill-mode: forwards;
+}
+
+.not-hidden-box {
+  animation: createBox 0.25s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes createBox {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+@keyframes createBoxDown {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(0);
+  }
+}
+
+@keyframes smallBox {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(0.9);
+  }
+}
+
+.hidden-wave {
+}
+
+.show-hidden-wave {
+  display: block;
 }

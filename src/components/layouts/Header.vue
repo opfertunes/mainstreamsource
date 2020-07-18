@@ -9,17 +9,14 @@
                 <strong>
                   Mainstream
                   <span class="text-primary">
-                    <i class="fa fa-headphones" aria-hidden="true"></i> </span
-                  >&nbsp;Source
+                    <i class="fa fa-headphones" aria-hidden="true"></i>
+                  </span>&nbsp;Source
                 </strong>
               </router-link>
             </h1>
           </div>
           <div class="col-4 col-md-4 col-lg-8">
-            <nav
-              class="site-navigation text-right text-md-right"
-              role="navigation"
-            >
+            <nav class="site-navigation text-right text-md-right" role="navigation">
               <div class="d-inline-block d-lg-none ml-md-0 mr-auto py-3">
                 <a href="#" class="site-menu-toggle js-menu-toggle text-white">
                   <span class="icon-menu h3"></span>
@@ -60,7 +57,7 @@
                       </ul>
                     </li>
                   </ul>
-                </li> -->
+                </li>-->
                 <li>
                   <router-link to="/">Contact Us</router-link>
                 </li>
@@ -69,6 +66,9 @@
                 </li>
                 <li>
                   <router-link to="/">Search Catalogue</router-link>
+                </li>
+                <li>
+                  <router-link to="/">Login</router-link>
                 </li>
               </ul>
             </nav>
@@ -95,7 +95,7 @@ export default {
   props: {},
   data() {
     return {};
-  },
+  }
 };
 </script>
 
