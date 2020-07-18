@@ -172,7 +172,10 @@ export default {
       //this.playIndex = -1;
     }
   },
-  destroyed() {}
+  destroyed() {
+    this.player.playPause();
+    this.player = null;
+  }
 };
 </script>
 
