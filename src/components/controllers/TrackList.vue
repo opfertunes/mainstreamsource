@@ -173,7 +173,7 @@ export default {
     }
   },
   destroyed() {
-    this.player.playPause();
+    this.player.stop();
     this.player = null;
   }
 };
