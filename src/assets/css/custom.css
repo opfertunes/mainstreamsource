@@ -1,5 +1,13 @@
-.home.slogan {
-  font-size: 32px;
+@media screen and (max-width:720px) {
+  .home.slogan {
+    font-size: 18px;
+  }
+}
+
+@media screen and (min-width:720px) {
+  .home.slogan {
+    font-size: 25px;
+  }
 }
 
 .css-typing h1 {
