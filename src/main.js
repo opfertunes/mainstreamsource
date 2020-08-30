@@ -5,11 +5,15 @@ import HomePage from "./components/controllers/HomePage";
 import TrackList from "./components/controllers/TrackList";
 import vSelect from "vue-select";
 import "vue-select/dist/vue-select.css";
+import VueSidebarMenu from 'vue-sidebar-menu';
+import 'vue-sidebar-menu/dist/vue-sidebar-menu.css';
 
 Vue.config.productionTip = false;
 
 Vue.component("v-select", vSelect);
 Vue.use(VueRouter);
+
+Vue.use(VueSidebarMenu);
 
 Vue.directive("click-outside", {
   bind: function(el, binding, vnode) {

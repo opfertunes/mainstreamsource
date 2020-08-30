@@ -1,5 +1,6 @@
 <template>
   <div>
+    <left-side-bar></left-side-bar>
     <div class="site-navbar mt-4">
       <div class="container py-1">
         <div class="row align-items-center">
@@ -90,8 +91,11 @@
 </template>
 
 <script>
+import LeftSideBar from "@/components/layouts/LeftSideBar";
+
 export default {
   name: "Header",
+  components: {LeftSideBar},
   props: {},
   data() {
     return {};
