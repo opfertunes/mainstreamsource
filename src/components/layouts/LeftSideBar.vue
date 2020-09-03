@@ -4,7 +4,12 @@
       :width-collapsed="'0px'"
       :hideToggle="propsIsCollapsed"
       :collapsed="propsIsCollapsed"
-      @toggle-collapse="toggleSidebar"/>
+      @toggle-collapse="toggleSidebar">
+
+  <template v-slot:toggle-icon>
+    <i class="fa fa-arrow-circle-left fa-2x"></i>
+  </template>
+  </sidebar-menu>
 </template>
 
 <script>
