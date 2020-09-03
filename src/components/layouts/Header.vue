@@ -1,14 +1,14 @@
 <template>
   <div>
-    <left-side-bar></left-side-bar>
     <div class="site-navbar mt-4">
       <div class="container py-1">
         <div class="row align-items-center">
+          <left-side-bar :props-is-collapsed="collapse" @toggle-sidebar="toggleSidebar"></left-side-bar>
           <div class="col-8 col-md-8 col-lg-4">
             <h1 class="mb-0">
               <router-link to="/" class="text-white h2 mb-0">
                 <strong>
-                  Mainstream
+                  <span class="icon-menu" @click="switchToggle"></span> Mainstream
                   <span class="text-primary">
                     <i class="fa fa-headphones" aria-hidden="true"></i>
                   </span>&nbsp;Source
@@ -91,6 +91,7 @@
 </template>
 
 <script>
+
 import LeftSideBar from "@/components/layouts/LeftSideBar";
 
 export default {
@@ -98,7 +99,17 @@ export default {
   components: {LeftSideBar},
   props: {},
   data() {
-    return {};
+    return {
+      collapse: true
+    };
+  },
+  methods: {
+    toggleSidebar(isCollapsed) {
+      this.collapse = isCollapsed;
+    },
+    switchToggle() {
+      this.collapse = !this.collapse;
+    }
   }
 };
 </script>

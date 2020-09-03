@@ -1,5 +1,5 @@
 <template>
-  <sidebar-menu :menu="menu" :collapsed="true"/>
+  <sidebar-menu :menu="menu" :collapsed="propsIsCollapsed" @toggle-collapse="toggleSidebar"/>
 </template>
 
 <script>
@@ -30,6 +30,12 @@ export default {
           ]
         }
       ]
+    }
+  },
+  props: ['propsIsCollapsed'],
+  methods: {
+    toggleSidebar(isCollapsed) {
+      this.$emit('toggle-sidebar', isCollapsed);
     }
   }
 }

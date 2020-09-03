@@ -2,7 +2,6 @@
   <div>
     <div class="site-wrap">
       <Header></Header>
-
       <div
         class="site-blocks-cover inner-page-cover overlay"
         :style="{
