@@ -1,5 +1,10 @@
 <template>
-  <sidebar-menu :menu="menu" :collapsed="propsIsCollapsed" @toggle-collapse="toggleSidebar"/>
+  <sidebar-menu
+      :menu="propsIsCollapsed ? Array : menu"
+      :width-collapsed="'0px'"
+      :hideToggle="propsIsCollapsed"
+      :collapsed="propsIsCollapsed"
+      @toggle-collapse="toggleSidebar"/>
 </template>
 
 <script>
