@@ -1,6 +1,6 @@
 <template>
   <sidebar-menu
-      :menu="propsIsCollapsed ? Array : menu"
+      :menu="propsIsCollapsed ? blank : menu"
       :width-collapsed="'0px'"
       :hideToggle="propsIsCollapsed"
       :collapsed="propsIsCollapsed"
@@ -39,7 +39,8 @@ export default {
             }
           ]
         }
-      ]
+      ],
+      blank: []
     }
   },
   props: ['propsIsCollapsed'],
