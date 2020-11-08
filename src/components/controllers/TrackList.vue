@@ -4,7 +4,19 @@
       <template v-slot:page-header>
         <div class="row align-items-center justify-content-center">
           <div class="col-md-7 text-center" data-aos="fade-up" data-aos-delay="400">
-            <h1 class="text-white">{{ genre.title }}&nbsp;{{ id }}</h1>
+            <div  v-for="(item, index) in searchDescription" :key="index" >
+    
+              <h2 class="text-white">
+                {{item.title}}
+              </h2>
+              <div class="ml-4" v-for="(searchItem, itemIndex) in item.searchItems" :key="itemIndex">
+                {{searchItem}}
+              </div>  
+            </div>
+            <div v-if="loadingSearch" class="d-flex justify-content-center mt-2 mb-3">
+              <em>Loading...</em>
+            </div>
+
             <p>Browse and listen to music from the list below.</p>
           </div>
         </div>
@@ -35,7 +47,7 @@
               <div class="col-md-9">
                 <div
                   class="d-block d-md-flex podcast-entry bg-white mb-5 main-song-container"
-                  v-for="(song, index) in songs"
+                  v-for="(song, index) in searchResults"
                   :key="index"
                 >
                   <div class="text" style="padding: 0px;">
@@ -97,9 +109,8 @@ top: 10px;"
 <script>
 import BaseLayoutCommon from "./../layouts/BaseLayoutCommon";
 import WaveSurfer from "wavesurfer.js";
-import songs from "./../../data/songList";
-import genres from "./../../data/genre";
 import { HomePageJs } from "./../libs/HomePageJs";
+import {mapState, mapGetters, mapActions} from "vuex";
 
 export default {
   name: "TrackList",
@@ -107,26 +118,45 @@ export default {
     BaseLayoutCommon
   },
   props: {
-    msg: String
+    msg: String,
   },
   data() {
     return {
-      songs: [],
-      genre: genres[this.$route.params.id - 1],
-      id: this.$route.params.id,
       playIndex: -1,
-      loading: [],
       player: null,
       componentKey: 0,
       pause: false
     };
   },
-  created() {},
+  created() {
+    // TODO: this page should be able to handle any search type (genre/keyword etc)
+    // for now, if a hard load, we'll assume genre. 
+
+    // if we have not called this page from BaseLayoutCover, then
+    // this is a full page load and we need to initialize the search data here:
+
+    if (!this.hasSearched) {
+
+      this.loadSearchLookups().then(() => {
+        const genreId = this.$route.params.genreId;
+        const genre = this.genres.find(genre => String(genre.genre_id) === String(genreId));
+        if (genre) {
+            // will trigger the search, see store/search.js
+            this.setSearchData(
+              {"genres":[genre]}
+            )
+        } else {
+          // cheesey, use toastr:
+          alert(`Genre not found for id ${genreId}`);
+        }
+      });
+    }
+  },
   mounted() {
+    // this is wonky:
     setTimeout(() => {
       HomePageJs();
     }, 1000);
-    this.songs = songs;
   },
   methods: {
     playMusic: function(i) {
@@ -149,32 +179,40 @@ export default {
           barHeight: 1,
           height: 40
         });
+        this.player = wavesurfer;
         wavesurfer.on("ready", function() {
           wavesurfer.play();
         });
-        let _self = this;
-        wavesurfer.on("finish", function() {
-          _self.pause = false;
-          _self.player.stop();
-          if (_self.playIndex < _self.songs.length - 1) {
-            _self.playMusic(_self.playIndex + 1);
-          } else if (_self.playIndex == _self.players.length - 1) {
-            _self.playIndex = -1;
+        
+        wavesurfer.on("finish", () => {
+          this.pause = false;
+          this.player.stop();
+          if (this.playIndex < this.searchResults.length - 1) {
+            this.playMusic(this.playIndex + 1);
+          } else if (this.playIndex == this.players.length - 1) {
+            this.playIndex = -1;
           }
         });
-        wavesurfer.load(songs[i].trackUrl);
-        this.player = wavesurfer;
+
+        wavesurfer.load(this.searchResults[i].trackUrl);
+        
       }, 500);
     },
     stopMusic: function() {
       this.player.playPause();
       this.pause = true;
       //this.playIndex = -1;
-    }
+    },
+    ...mapActions("search", ["loadSearchLookups", "setSearchData"]),
+  },
+  computed: {
+    ...mapState("search", ["searchResults", "genres", "loadingSearch"]),
+    ...mapGetters("search", ["searchDescription", "hasSearched" ]),
   },
   destroyed() {
-    this.player.stop();
-    this.player = null;
+    if (this.player) {
+      this.player.stop();
+    }
   }
 };
 </script>

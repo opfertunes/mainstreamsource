@@ -154,8 +154,8 @@ export default {
         this.selected = index;
       }, 100);
     },
+    // eslint-disable-next-line no-unused-vars
     outsideClick: function(event) {
-      console.log(event);
       if (this.selected != -1) this.selected = -1;
     }
   }

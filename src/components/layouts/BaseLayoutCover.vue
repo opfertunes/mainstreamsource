@@ -27,12 +27,18 @@
               </h1>
               <div class="input-group mb-4 search-box">
                 <v-select
-                  class="form-control"
-                  label="title"
+                  class="form-control mr-2"
                   placeholder="Search for any Genre"
                   :options="genres"
-                  @input="setSelected"
+                  label="description"
+                  v-model="selectedGenre"
+                  @input="setSelectedGenre"
+                  :disabled="loadingSearch"
                 ></v-select>
+                 <div v-if="loadingSearch" class="d-flex justify-content-center mt-2 mb-3">
+                    <em>Loading...</em>
+                 </div>
+
               </div>
             </div>
           </div>
@@ -49,7 +55,8 @@
 <script>
 import Header from "./Header";
 import Footer from "./Footer";
-import genres from "./../../data/genre.json";
+
+import {mapActions, mapState} from "vuex";
 
 export default {
   name: "BaseLayoutCover",
@@ -59,15 +66,43 @@ export default {
   },
   props: {},
   data() {
-    return {
-      genres,
+    return { 
+      selectedGenre: null
     };
   },
-  methods: {
-    setSelected() {
-      this.$router.push("/genres/1/tracks");
-    },
+  created() {
+    this.clearSearch()
+    this.loadSearchLookups()
+    .catch((error) => {
+      // show a proper error message!
+      console.error(error);
+    })
+    .finally(() => {
+      this.loading = false;
+    })
   },
+  methods: {
+    setSelectedGenre() {
+
+      if (this.loadingSearch) {
+        return;
+      }
+
+      if (!this.selectedGenre) {
+        return;
+      }
+      // will trigger the search, see store/search.js
+      this.setSearchData(
+        {"genres":[this.selectedGenre]}
+      ).then(() => {
+        this.$router.push(`/genres/${this.selectedGenre.genre_id}/tracks`);
+      })
+    },
+    ...mapActions("search", ["clearSearch", "loadSearchLookups", "setSearchData"]),
+  },
+  computed: {
+     ...mapState("search", ["genres", "loadingSearch"]),
+  }
 };
 </script>
 

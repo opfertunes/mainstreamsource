@@ -1,6 +1,5 @@
 /* eslint-disable no-unused-vars */
 export const MusicPlayer = (__index, songEnd) => {
-  console.log("called");
 
   setTimeout(() => {
     let track = window["track" + __index];
