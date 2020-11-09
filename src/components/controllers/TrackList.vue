@@ -194,7 +194,9 @@ export default {
           }
         });
 
-        wavesurfer.load(this.searchResults[i].trackUrl);
+        const trackUrl = `${process.env.VUE_APP_SNIPPET_URL}/${this.searchResults[i].snippet_file}`;
+        
+        wavesurfer.load(trackUrl);
         
       }, 500);
     },

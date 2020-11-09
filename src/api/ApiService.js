@@ -4,7 +4,6 @@ const https = require("https");
 
 //The data service now provides a search capability through the URL
 //https://mainstreamsource.com/cgi-bin/services/mss_data_service.pl?service=get_search_results&cond=JSON
-console.debug(process.env);
 
 const apiClient = axios.create({
    baseURL: process.env.VUE_APP_MAINSTREAM_API_URL,
