@@ -9,7 +9,6 @@ import VueSidebarMenu from 'vue-sidebar-menu';
 import 'vue-sidebar-menu/dist/vue-sidebar-menu.css';
 import store from '@/store';
 
-
 Vue.config.productionTip = false;
 
 Vue.component("v-select", vSelect);
@@ -52,7 +51,7 @@ const routes = [
         },
     },
     {
-        path: "/genres/:genreId/tracks",
+        path: "/tracks",
         component: TrackList,
         meta: {
             title: "MainstreamSource | Genre | Track List",

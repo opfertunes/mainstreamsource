@@ -46,12 +46,12 @@ export default {
         }, 
         ...this.leftMenuTree.map(menuItem => {
           return {
-            href: '/',
+            //href: `/tracks?cd_category=${menuItem.cdCategory.category_id}`,
             title: menuItem.cdCategory.description,
             icon: 'fa fa-music',
             child: menuItem.cds.map(cd => {
               return {
-                href: '/',
+                href: `/tracks?cd=${cd.cd_id}`,
                 title: cd.title,
                 icon: 'fa fa-play-circle-o',
               }

@@ -91,14 +91,11 @@ export default {
       if (!this.selectedGenre) {
         return;
       }
-      // will trigger the search, see store/search.js
-      this.setSearchData(
-        {"genres":[this.selectedGenre]}
-      ).then(() => {
-        this.$router.push(`/genres/${this.selectedGenre.genre_id}/tracks`);
-      })
+
+      this.$router.push(`/tracks?genre=${this.selectedGenre.genre_id}`);
+
     },
-    ...mapActions("search", ["clearSearch", "loadSearchLookups", "setSearchData"]),
+    ...mapActions("search", ["clearSearch", "loadSearchLookups"]),
   },
   computed: {
      ...mapState("search", ["genres", "loadingSearch"]),

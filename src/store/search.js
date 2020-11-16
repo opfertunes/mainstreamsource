@@ -78,7 +78,9 @@ export const getters = {
         const result = [];
          
         Object.keys(state.searchData).forEach(searchKey => {
+
             const subSearch = state.searchData[searchKey];
+
             const title = titleKeys[searchKey][subSearch.length === 1 ? 'title' : 'titlePlural'];
             const searchItems = subSearch.map(item => item[titleKeys[searchKey].titleField]);
 
@@ -165,7 +167,8 @@ export const actions = {
                       'cdCategories': 'category_id',
                       'timePeriods': 'time_period_id',
                       'artists': 'artist_id',
-                      'composers': 'composer_id'
+                      'composers': 'composer_id',
+                      'cds': 'cd_id',
                      }
         const dataKeys = Object.keys(data);
         const jsonParams = {}

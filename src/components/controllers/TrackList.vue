@@ -16,8 +16,15 @@
             <div v-if="loadingSearch" class="d-flex justify-content-center mt-2 mb-3">
               <em>Loading...</em>
             </div>
+            <div v-if="errorMessage" class="d-flex justify-content-center mt-2 mb-3">
+              {{errorMessage}}
+            </div>
 
-            <p>Browse and listen to music from the list below.</p>
+            <p v-if="!loadingSearch && !errorMessage && searchResults">
+              <span v-if="searchResults.length">Browse and listen to music from the list below.</span>
+              <span v-else>No tracks found for your search.</span>
+            </p>
+            
           </div>
         </div>
       </template>
@@ -44,7 +51,7 @@
                   </div>
                 </a>
               </div>
-              <div class="col-md-9">
+              <div class="col-md-9" v-if="searchResults">
                 <div
                   class="d-block d-md-flex podcast-entry bg-white mb-5 main-song-container"
                   v-for="(song, index) in searchResults"
@@ -125,7 +132,9 @@ export default {
       playIndex: -1,
       player: null,
       componentKey: 0,
-      pause: false
+      pause: false,
+      queryParams: {},
+      errorMessage: null
     };
   },
   created() {
@@ -133,24 +142,63 @@ export default {
     // for now, if a hard load, we'll assume genre. 
 
     // if we have not called this page from BaseLayoutCover, then
-    // this is a full page load and we need to initialize the search data here:
+    // this is a full page load and we need to initialize the search data here: 
+    this.queryParams = this.$route.query;
 
-    if (!this.hasSearched) {
-
-      this.loadSearchLookups().then(() => {
-        const genreId = this.$route.params.genreId;
-        const genre = this.genres.find(genre => String(genre.genre_id) === String(genreId));
-        if (genre) {
-            // will trigger the search, see store/search.js
-            this.setSearchData(
-              {"genres":[genre]}
-            )
-        } else {
-          // cheesey, use toastr:
-          alert(`Genre not found for id ${genreId}`);
-        }
-      });
+    if (!Object.keys(this.queryParams).length) {
+      this.errorMessage = "No search criteria were entered"
+      return;
     }
+    
+    this.loadSearchLookups().then(() => {
+      const searchData = {}
+      let lookupList, pkName, pk, storeKey, description;
+
+      if (this.queryParams.genre) {
+        pk = this.queryParams.genre;
+        lookupList = this.genres;
+        pkName = "genre_id";
+        storeKey = "genres";
+        description = "Genre"
+
+      }
+      else if (this.queryParams.cd_category) {
+        pk = this.queryParams.cd_category;
+        lookupList = this.cdCategories;
+        pkName = "category_id";
+        storeKey = "cdCategories";
+        description = "CD Category"
+
+      }
+      else if (this.queryParams.cd) {
+        pk = this.queryParams.cd;
+        lookupList = this.cds;
+        pkName = "cd_id";
+        storeKey = "cds";
+        description = "CD"
+      }
+
+      if (!pk || !lookupList || !pkName || !storeKey || !description) {
+
+        this.errorMessage = "Please enter a valid search"
+
+        return;
+      }
+
+
+
+      const searchObj = lookupList.find(obj => String(obj[pkName]) === String(pk));
+      if (!searchObj) {
+        this.errorMessage = `${description} not found for id ${pk}`
+        return;
+      }
+
+      searchData[storeKey] = [searchObj];
+
+      this.setSearchData(searchData);
+      
+    });
+  
   },
   mounted() {
     // this is wonky:
@@ -208,7 +256,11 @@ export default {
     ...mapActions("search", ["loadSearchLookups", "setSearchData"]),
   },
   computed: {
-    ...mapState("search", ["searchResults", "genres", "loadingSearch"]),
+    ...mapState("search", ["searchResults", 
+                           "genres", 
+                           "cdCategories",
+                           "cds", 
+                           "loadingSearch"]),
     ...mapGetters("search", ["searchDescription", "hasSearched" ]),
   },
   destroyed() {
