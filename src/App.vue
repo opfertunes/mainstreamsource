@@ -24,8 +24,9 @@ export default {
 @import "./assets/fonts/flaticon/font/flaticon.css";
 @import "./assets/css/fl-bigmug-line.css";
 @import "./assets/css/aos.css";
-@import "./assets/css/style.css";
-@import "./assets/css/custom.css";
 @import "./assets/css/MusicPlayer.css";
 @import "./assets/fonts/fa/css/font-awesome.min.css";
+@import "./assets/css/style.css";
+@import "./assets/css/custom.css";
+
 </style>

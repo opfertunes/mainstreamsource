@@ -14,7 +14,9 @@ export function defaultState() {
         keywords: [],
         tempoTypes: [],
         songCategories: [],
+        cds: [],
         cdCategories: [],
+        cdCategoryAssoc: [],
         timePeriods: [],
         artists: [],
         composers: [],
@@ -67,6 +69,10 @@ export const getters = {
                                 title: 'Composer',
                                 titlePlural: 'Composers',
                                 titleField: 'name'},
+                           'cds': {
+                                title: 'CD',
+                                titlePlural: 'CDs',
+                                titleField: 'title'},      
                     }
 
         const result = [];
@@ -84,6 +90,23 @@ export const getters = {
     },
     hasSearched: (state) => {
         return state.searchResults !== null;
+    },
+    leftMenuTree: (state) => {
+        return state.cdCategories.map(cdCategory => {
+            const cdCatAssociations = state.cdCategoryAssoc.filter(
+                cdCatAssoc => cdCatAssoc.category_id === cdCategory.category_id
+            )
+            const cds = cdCatAssociations.map(cdca => 
+                state.cds.find(cd => cd.cd_id === cdca.cd_id)
+            )
+
+            cds.sort((cd1, cd2) => {
+                return cd1.title === cd2.title ? 0 :
+                  cd1.title < cd2.title ? -1 : 1;
+            })
+
+            return {cdCategory, cds}
+        })
     }          
 };
 
@@ -117,7 +140,9 @@ export const mutations = {
                       'cdCategories': 'cd_category',
                       'timePeriods': 'time_periods',
                       'artists': 'artist',
-                      'composers': 'composer'}
+                      'composers': 'composer',
+                      'cdCategoryAssoc': 'cd_category_assoc',
+                      'cds': 'cd'}
  
         Object.keys(keys).forEach(key => {
             Vue.set(state, key, data[keys[key]]);

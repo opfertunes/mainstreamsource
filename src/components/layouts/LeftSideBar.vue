@@ -6,40 +6,21 @@
       :collapsed="propsIsCollapsed"
       @toggle-collapse="toggleSidebar">
 
-  <template v-slot:toggle-icon>
-    <i class="fa fa-arrow-circle-left fa-2x"></i>
-  </template>
+     <div slot="toggle-icon">
+       <i class="fa fa-arrow-circle-left fa-2x"></i>
+     </div>
+     
   </sidebar-menu>
 </template>
 
 <script>
+
+import {mapGetters} from "vuex";
+
 export default {
   name: "LeftSideBar",
   data() {
     return {
-      menu: [
-        {
-          header: true,
-          title: 'Main Navigation',
-          hiddenOnCollapse: true
-        },
-        {
-          href: '/',
-          title: 'Dashboard',
-          icon: 'fa fa-user'
-        },
-        {
-          href: '/charts',
-          title: 'Charts',
-          icon: 'fa fa-chart-area',
-          child: [
-            {
-              href: '/charts/sublink',
-              title: 'Sub Link'
-            }
-          ]
-        }
-      ],
       blank: []
     }
   },
@@ -48,6 +29,40 @@ export default {
     toggleSidebar(isCollapsed) {
       this.$emit('toggle-sidebar', isCollapsed);
     }
+  },
+  computed: {
+    menu() {
+
+      const result = [
+        {
+          header: true,
+          title: 'Mainstream Source',
+          hiddenOnCollapse: true
+        },
+        {
+          href: '/',
+          title: 'Dashboard',
+          icon: 'fa fa-user'
+        }, 
+        ...this.leftMenuTree.map(menuItem => {
+          return {
+            href: '/',
+            title: menuItem.cdCategory.description,
+            icon: 'fa fa-music',
+            child: menuItem.cds.map(cd => {
+              return {
+                href: '/',
+                title: cd.title,
+                icon: 'fa fa-play-circle-o',
+              }
+            })
+          }
+        })
+      ]
+
+      return result;
+    },
+    ...mapGetters("search", ["leftMenuTree"])
   }
 }
 </script>

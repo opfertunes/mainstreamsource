@@ -156,3 +156,19 @@
   background: #4f4f4f !important;
   height: 146px;
 }
+
+/* vue-sidebar overrides */
+.v-sidebar-menu .vsm--arrow::after {
+  content: '\f105' !important;
+  font-family: 'FontAwesome' !important;
+}
+
+.v-sidebar-menu .vsm--icon {
+  margin-left: 20px !important;
+}
+
+.v-sidebar-menu.vsm_expanded .vsm--item_open .vsm--link_level-1 .vsm--icon,
+.v-sidebar-menu .vsm--link_level-1 .vsm--icon
+{
+  margin-left: 0px !important;
+}
