@@ -1,6 +1,11 @@
 .DS_Store
 node_modules
+
+# build folders:
 /dist
+/newvue
+dist.zip
+newvue.zip
 
 # local env files
 .env.local
