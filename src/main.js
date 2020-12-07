@@ -8,7 +8,7 @@ import "vue-select/dist/vue-select.css";
 import VueSidebarMenu from 'vue-sidebar-menu';
 import 'vue-sidebar-menu/dist/vue-sidebar-menu.css';
 import store from '@/store';
-
+import { publicPath } from '../vue.config'
 Vue.config.productionTip = false;
 
 Vue.component("v-select", vSelect);
@@ -88,6 +88,7 @@ const routes = [
 ];
 
 const router = new VueRouter({
+    base: publicPath,
     routes,
     mode: "history",
     scrollBehavior(to, from, savedPosition) {
