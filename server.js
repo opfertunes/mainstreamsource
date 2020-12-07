@@ -2,7 +2,7 @@ var express = require("express");
 var cors = require("cors");
 var serveStatic = require("serve-static");
 
-app = express();
+const app = express();
 app.use(cors());
 app.use(serveStatic(__dirname + "/dist"));
 
