@@ -10,12 +10,14 @@
         data-stellar-background-ratio="0.5"
         data-aos="fade"
       >
-        <div class="container">
+        <div class="container-fluid">
           <slot name="page-header"></slot>
         </div>
       </div>
 
       <slot name="page-content"></slot>
+
+      
 
       <Footer></Footer>
     </div>

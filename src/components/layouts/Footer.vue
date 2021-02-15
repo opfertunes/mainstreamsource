@@ -1,6 +1,6 @@
 <template>
   <footer class="site-footer">
-    <div class="container">
+    <div class="container-fluid">
       <div class="row">
         <div class="col-lg-4">
           <div class="mb-5">

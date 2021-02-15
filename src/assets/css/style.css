@@ -147,15 +147,7 @@ a:hover {
 }
 
 .site-section {
-  padding: 3em 0;
-}
-@media (min-width: 768px) {
-  .site-section {
-    padding: 7em 0;
-  }
-}
-.site-section.site-section-sm {
-  padding: 4em 0;
+  padding-top: 3em;
 }
 
 .bg-text-line {
@@ -739,6 +731,7 @@ a:hover {
   top: 0;
   background: rgba(0, 0, 0, 0.4);
 }
+
 .site-blocks-cover,
 .site-blocks-cover .row {
   min-height: 600px;
@@ -746,8 +739,8 @@ a:hover {
 }
 .site-blocks-cover.inner-page-cover,
 .site-blocks-cover.inner-page-cover .row {
-  min-height: 600px;
-  height: calc(30vh);
+  height: auto;
+  min-height: 350px;
 }
 .site-blocks-cover .sub-text {
   font-size: 1.1rem;
@@ -1873,7 +1866,7 @@ a:hover {
   z-index: 1;
   background: rgba(0, 0, 0, 0.5);
 }
-.unit-5 > .container {
+.unit-5 > .container-fluid {
   z-index: 2;
   position: relative;
 }
@@ -2121,12 +2114,13 @@ a:hover {
   letter-spacing: 0.15em;
   text-transform: uppercase;
 }
+/*
 .unit-9:hover .image {
   -webkit-transform: scale(1);
   -ms-transform: scale(1);
   transform: scale(1);
 }
-
+*/
 .site-section-heading h2 {
   font-size: 2rem;
   letter-spacing: 0.2em;
@@ -2501,3 +2495,18 @@ figure figcaption {
 .show-hidden-wave {
   display: block;
 }
+
+.modal-dialog {
+  color:#000 !important;
+}
+
+.track-info .description {
+  color: #555555;
+}
+
+.container-fluid {
+  padding-right:35px;
+  padding-left:35px;
+  margin-right:auto;
+  margin-left:auto
+ }

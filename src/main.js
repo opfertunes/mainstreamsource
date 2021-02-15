@@ -9,11 +9,14 @@ import VueSidebarMenu from 'vue-sidebar-menu';
 import 'vue-sidebar-menu/dist/vue-sidebar-menu.css';
 import store from '@/store';
 import { publicPath } from '../vue.config'
+//import BootstrapVue from "bootstrap-vue";
+//import "bootstrap/dist/css/bootstrap.min.css";
+//import "bootstrap-vue/dist/bootstrap-vue.css";
 Vue.config.productionTip = false;
 
 Vue.component("v-select", vSelect);
 Vue.use(VueRouter);
-
+//Vue.use(BootstrapVue);
 Vue.use(VueSidebarMenu);
 
 Vue.directive("click-outside", {

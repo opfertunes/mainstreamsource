@@ -10,9 +10,11 @@
                 {{item.title}}
               </h2>
               <div class="ml-4" v-for="(searchItem, itemIndex) in item.searchItems" :key="itemIndex">
-                {{searchItem}}
-              </div>  
+              {{searchItem}}
+              </div> 
+
             </div>
+    
             <div v-if="loadingSearch" class="d-flex justify-content-center mt-2 mb-3">
               <em>Loading...</em>
             </div>
@@ -30,22 +32,22 @@
       </template>
       <template v-slot:page-content>
         <div class="site-section">
-          <div class="container">
+          <div class="container-fluid">
             <div class="row">
-              <div class="col-md-3">
+              <div class="col-md-3 pb-3" v-if="coverArtUrl">
                 <a
                   href="#"
                   class="col1 unit-9 no-height aos-init aos-animate"
                   data-aos="fade-up"
                   data-aos-delay="100"
+                  v-if="!loadingSearch"
                 >
-                  <div
+
+                  <img
                     class="image"
-                    :style="{
-                      backgroundImage: `url(${require(`@/assets/images/img_2.jpg`)})`,
-                    }"
-                  ></div>
-                  <div class="unit-9-content">
+                    :src="coverArtUrl"/>              
+
+                  <div class="unit-9-content" v-if="false">
                     <h2>Album Title</h2>
                     <span>Other Info</span>
                   </div>
@@ -61,13 +63,13 @@
                     <div class="row">
                       <div class="col-sm-12">
                         <h3 class="font-weight-light" style>
-                          <span style="margin-left: 12px; position: relative; top: 2px;">
-                            <i
+                          <span class="action-icon">
+                            <a><i
                               class="fa fa-play-circle"
                               aria-hidden="true"
                               v-on:click="playMusic(index)"
                               v-if="playIndex != index || (playIndex == index && pause)"
-                            ></i>
+                            ></i></a>
                             <i
                               class="fa fa-pause"
                               aria-hidden="true"
@@ -75,24 +77,23 @@
                               v-if="playIndex == index && !pause"
                             ></i>
                           </span>
-                          <span style="margin-left: 12px; position: relative; top: 2px;">
-                            <i class="fa fa-info-circle" aria-hidden="true"></i>
+                          <span class="action-icon">
+                            <i class="fa fa-info-circle" aria-hidden="true"
+                               v-on:click="showSongInfo(song)"></i>
                           </span>
-                          <span style="margin-left: 12px; position: relative; top: 2px;">
+                          <span class="action-icon">
                             <i class="fa fa-download" aria-hidden="true"></i>
                           </span>
 
-                          <a
-                            style="font-size: 16px; color: #e3207b; margin-left: 10px; position: relative; top: -1px; left: 0px;"
-                          >{{ song.title }}{{ index + 1 }}</a>
+                          <span class="song-index-title">{{ index + 1 }}: {{ song.title }}</span>
 
                           <span
                             style="float: right;
-position: relative;
-font-size: 17px;
-right: 10px;
-top: 10px;"
-                          >1:15</span>
+                                  position: relative;
+                                  font-size: 17px;
+                                  right: 10px;
+                                  top: 10px;"
+                          >{{song.duration}}</span>
                         </h3>
                       </div>
 
@@ -110,6 +111,74 @@ top: 10px;"
         </div>
       </template>
     </BaseLayoutCommon>
+
+    <!-- Modal -->
+    <div class="modal fade" id="trackInfo" tabindex="-1" role="dialog" aria-labelledby="trackInfoLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content track-info" v-if="songDialogData">
+          <div class="modal-header">
+            <h5 class="modal-title" id="trackInfoLabel">{{songDialogData.song.title}} </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p class="description">
+              {{songDialogData.song.description}} 
+            </p>
+            <div class="row"> 
+              <div class="col">
+                <table>
+                  <tr>
+                    <td class="left-row-header"> <strong>Composer(s)</strong> </td>
+                    <td> 
+                      <ul> 
+                        <li v-for="composer in songDialogData.details.composer" :key="composer.composer_id">  
+                          {{composer.name}} ({{composer.publisher}}) {{composer.percent}}%
+                        </li>
+                      </ul>
+
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="left-row-header"> <strong>Publisher(s)</strong> </td>
+                    <td> 
+                      <ul> 
+                        <li v-for="publisher in songDialogData.details.publisher" :key="publisher.publisher_id">  
+                          {{publisher.publisher}} {{publisher.percent}}%
+                        </li>
+                      </ul>
+
+                    </td>
+                  </tr>
+
+                </table>
+              </div>    
+            </div>
+
+            <div class="row pt-4">
+              <div class="col-12">
+                length: {{songDialogData.song.duration}} &mdash; tempo: {{songDialogData.song.tempo}} bpm
+              </div>  
+            </div>  
+            <div class="row">
+              <div class="col-12">
+                Key: {{songDialogData.song.song_key}}
+              </div>  
+            </div>  
+            <div class="row">
+              <div class="col-12">
+                Meter: {{songDialogData.song.meter}}
+              </div>  
+            </div>  
+            
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -117,6 +186,7 @@ top: 10px;"
 import BaseLayoutCommon from "./../layouts/BaseLayoutCommon";
 import WaveSurfer from "wavesurfer.js";
 import { HomePageJs } from "./../libs/HomePageJs";
+import ApiService from "@/api/ApiService";
 import {mapState, mapGetters, mapActions} from "vuex";
 
 export default {
@@ -134,7 +204,8 @@ export default {
       componentKey: 0,
       pause: false,
       queryParams: {},
-      errorMessage: null
+      errorMessage: null,
+      songDialogData: null,
     };
   },
   created() {
@@ -253,14 +324,39 @@ export default {
       this.pause = true;
       //this.playIndex = -1;
     },
+    showSongInfo: function(song) {
+      this.songDialogData = null;
+      let $ = window["jQuery"];
+
+      ApiService.getSongDetails(song.song_id).then(data => {
+
+        this.songDialogData = {
+          song,
+          details: data.data
+        }
+        $('#trackInfo').modal().on('hide.bs.modal', function(){
+           this.songDialogData = null;
+        })
+
+      })
+
+
+    },
+    onModalClosed: function() {
+      this.songDialogData = null;
+    },
     ...mapActions("search", ["loadSearchLookups", "setSearchData"]),
   },
   computed: {
+    coverArtUrl: function() {
+      return this.searchData.cds && this.searchData.cds.length ?
+        `https://mainstreamsource.com/${this.searchData.cds[0].image_loc}` : null;
+    },
     ...mapState("search", ["searchResults", 
                            "genres", 
                            "cdCategories",
                            "cds", 
-                           "loadingSearch"]),
+                           "loadingSearch", "searchData"]),
     ...mapGetters("search", ["searchDescription", "hasSearched" ]),
   },
   destroyed() {
@@ -271,4 +367,28 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+
+.left-row-header {
+  vertical-align: top;
+}
+
+i.fa {
+  cursor:pointer;
+}
+
+.action-icon {
+  margin-left: 12px; 
+  position: relative; 
+  top: 2px;
+}
+
+.song-index-title {
+   font-size: 16px; 
+   color: #e3207b; 
+   margin-left: 20px; 
+   position: relative; 
+   top: -1px; left: 0px;
+}
+            
+</style>

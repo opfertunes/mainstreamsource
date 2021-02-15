@@ -2,7 +2,7 @@
   <div>
     <BaseLayoutCover>
       <div class="site-section bg-dark block-13" v-click-outside="outsideClick">
-        <div class="container" data-aos="fade-up">
+        <div class="container-fluid" data-aos="fade-up">
           <div class="row">
             <div class="site-section-heading text-center mb-5 w-border col-md-6 mx-auto">
               <h2 class="mb-5">Upcoming</h2>
@@ -34,7 +34,7 @@
       </div>
 
       <div class="site-section">
-        <div class="container">
+        <div class="container-fluid">
           <div class="row">
             <div class="site-section-heading text-center mb-5 w-border col-md-6 mx-auto">
               <h2 class="mb-5">Browse Genre</h2>

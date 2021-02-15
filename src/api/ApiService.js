@@ -68,4 +68,16 @@ export default {
        return apiClient.get("/", {params:{service: 'get_search_results',
                                           cond: JSON.stringify(searchData || {})}});
    },
+   /**
+    * song details endpoint
+    *
+    * @param {Object} songDetails - object of key/value search params
+    *
+    */
+   getSongDetails(songId) {
+        
+      return apiClient.get("/", {params:{service: 'get_song_detail',
+                                         song_id: songId }});
+  },
+
 };

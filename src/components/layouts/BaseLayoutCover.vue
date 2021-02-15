@@ -10,7 +10,7 @@
         data-aos="fade"
         data-stellar-background-ratio="0.5"
       >
-        <div class="container">
+        <div class="container-fluid">
           <div class="row align-items-center justify-content-center">
             <div
               class="col-md-7 text-center css-typing"
