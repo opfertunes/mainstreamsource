@@ -41,7 +41,11 @@
                   <router-link to="/">Search Catalogue</router-link>
                 </li>
                 <li>
-                  <router-link to="/">Login</router-link>
+                  <a v-if="!isAuthenticated" 
+                     href="https://mainstreamsource.com/login.php?redirect_to=/newvue/">Login</a>
+
+                  <a v-if="isAuthenticated" 
+                     href="https://mainstreamsource.com/login.php?Action=logout&redirect_to=/newvue/">Logout</a>   
                 </li>
               </ul>
             </nav>
@@ -65,6 +69,7 @@
 <script>
 
 import LeftSideBar from "@/components/layouts/LeftSideBar";
+import {mapActions, mapGetters} from "vuex";
 
 export default {
   name: "Header",
@@ -75,13 +80,20 @@ export default {
       collapse: true
     };
   },
+  created() {
+    this.loadAuthUserData();
+  },
   methods: {
     toggleSidebar(isCollapsed) {
       this.collapse = isCollapsed;
     },
     switchToggle() {
       this.collapse = !this.collapse;
-    }
+    },
+    ...mapActions("user", ["loadAuthUserData" ]),
+  },
+  computed: {
+     ...mapGetters("user", ["isAuthenticated" ]),
   }
 };
 </script>

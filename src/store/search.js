@@ -204,7 +204,6 @@ export const actions = {
         commit("setLoadingSearch", true);
 
         return ApiService.getSearchableItems().then((response) => {
-            console.debug(response.data)
             commit("setLookups", response.data);
         })
         .finally(() => {

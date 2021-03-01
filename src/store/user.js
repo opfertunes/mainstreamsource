@@ -3,51 +3,34 @@
  *  Stub for future use....
  */
 
-import Vue from "vue";
-
-
 export function defaultState() {
    return {
-      userType: null,
-      userId: null,
-      userRights: {
-      },
+      authData: {},
    };
 }
 
 // eslint-disable-next-line func-style
 export const getters = {
-   userType: (state) => state.userType,
-   userId: (state) => state.userId,
-   userRights: (state) => state.userRights,
+   authData: (state) => state.authData,
+   isAuthenticated: (state) => {
+      return state.authData && state.authData.customer_id;
+   }   
 };
 
 export const mutations = {
 
-   setUserType(state, userType) {
-      Vue.set(
-         state,
-         "userType",
-         userType,
-      );
-   },
-   setUserId(state, userId) {
-      Vue.set(
-         state,
-         "userId",
-         userId,
-      );
-   },
-   setUserRights(state, value) {
-      Vue.set(
-         state,
-         "userRights",
-         value,
-      );
-   },
+   setAuthData(state, value) {
+      state.authData = value;
+   }
 };
 
-export const actions = {};
+export const actions = {
+   loadAuthUserData: ({commit}) => {
+      fetch('https://mainstreamsource.com/login.php?Action=me')
+      .then(response => response.json())
+      .then(data => commit("setAuthData", data))
+   },
+};
 
 export default {
    namespaced: true,

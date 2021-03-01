@@ -81,7 +81,8 @@
                             <i class="fa fa-info-circle" aria-hidden="true"
                                v-on:click="showSongInfo(song)"></i>
                           </span>
-                          <span class="action-icon">
+
+                          <span v-if="isAuthenticated" class="action-icon">
                             <i class="fa fa-download" aria-hidden="true"></i>
                           </span>
 
@@ -358,6 +359,7 @@ export default {
                            "cds", 
                            "loadingSearch", "searchData"]),
     ...mapGetters("search", ["searchDescription", "hasSearched" ]),
+    ...mapGetters("user", ["isAuthenticated" ]),
   },
   destroyed() {
     if (this.player) {
