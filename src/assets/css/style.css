@@ -285,11 +285,11 @@ a:hover {
 }
 
 .site-footer {
-  padding: 4em 0;
+  padding: 1em 0;
 }
 @media (min-width: 768px) {
   .site-footer {
-    padding: 7em 0;
+    padding: 1em 0;
   }
 }
 .site-footer p {
@@ -734,8 +734,7 @@ a:hover {
 
 .site-blocks-cover,
 .site-blocks-cover .row {
-  min-height: 600px;
-  height: calc(100vh);
+  height: calc(75vh);
 }
 .site-blocks-cover.inner-page-cover,
 .site-blocks-cover.inner-page-cover .row {
