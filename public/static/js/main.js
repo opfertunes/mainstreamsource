@@ -1,9 +1,3 @@
-//AOS.init({
-//  duration: 800,
-//  easing: "slide",
-//  once: true,
-//});
-
 console.debug("main.js...");
 jQuery(document).ready(function($) {
   "use strict";
@@ -88,7 +82,7 @@ jQuery(document).ready(function($) {
     });
   };
   siteMenuClone();
-  
+
   var siteStellar = function() {
     $(window).stellar({
       responsive: true,
