@@ -17,7 +17,7 @@ export default {
 @import "./assets/css/bootstrap.min.css";
 @import "./assets/css/magnific-popup.css";
 // @import "./assets/css/jquery-ui.css";
-@import "./assets/css/owl.carousel.min.css";
+// @import "./assets/css/owl.carousel.min.css";
 @import "./assets/css/bootstrap-datepicker.css";
 // @import "./assets/css/mediaelementplayer.css";
 @import "./assets/css/animate.css";
