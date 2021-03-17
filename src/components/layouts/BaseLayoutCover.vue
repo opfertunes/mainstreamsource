@@ -7,7 +7,6 @@
         :style="{
           backgroundImage: `url(${require(`@/assets/images/hero_bg_1.jpg`)})`,
         }"
-        data-stellar-background-ratio="0.5"
       >
         <div class="container-fluid">
           <div class="row align-items-center justify-content-center">

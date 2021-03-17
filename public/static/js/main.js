@@ -83,18 +83,6 @@ jQuery(document).ready(function($) {
   };
   siteMenuClone();
 
-  var siteStellar = function() {
-    $(window).stellar({
-      responsive: true,
-      parallaxBackgrounds: true,
-      parallaxElements: true,
-      horizontalScrolling: false,
-      hideDistantElements: false,
-      scrollProperty: "scroll",
-    });
-  };
-  siteStellar();
-
   var siteCountDown = function() {
     if ($("#date-countdown").length > 0) {
       $("#date-countdown").countdown("2020/10/10", function(event) {
