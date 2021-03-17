@@ -2,7 +2,7 @@
   <div>
     <BaseLayoutCover>
       <div class="site-section bg-dark block-13" v-click-outside="outsideClick">
-        <div class="container-fluid" data-aos="fade-up">
+        <div class="container-fluid" >
           <div class="row">
             <div class="site-section-heading text-center mb-5 w-border col-md-6 mx-auto">
               <h2 class="mb-5">Upcoming</h2>
@@ -12,8 +12,6 @@
             <div
               v-for="(genre, index) in genres"
               :key="index"
-              data-aos="fade-up"
-              data-aos-delay="100"
             >
               <router-link :to="`/genres/${index + 1}/tracks`" class="unit-9">
                 <!-- <a class="unit-9"> -->

@@ -1,14 +1,14 @@
 /* eslint-disable no-unused-vars */
 export function HomePageJs() {
-  let AOS = window["AOS"];
+  //let AOS = window["AOS"];
   let jQuery = window["jQuery"];
 
-  AOS.init({
-    duration: 800,
-    easing: "slide",
-    once: true,
-  });
-
+  //AOS.init({
+  //  duration: 800,
+   // easing: "slide",
+  //  once: true,
+  //});
+  console.debug("HomePageJs...");
   jQuery(document).ready(function($) {
     "use strict";
 

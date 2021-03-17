@@ -7,15 +7,12 @@
         :style="{
           backgroundImage: `url(${require(`@/assets/images/hero_bg_1.jpg`)})`,
         }"
-        data-aos="fade"
         data-stellar-background-ratio="0.5"
       >
         <div class="container-fluid">
           <div class="row align-items-center justify-content-center">
             <div
               class="col-md-7 text-center css-typing"
-              data-aos="fade-up"
-              data-aos-delay="400"
             >
               <h1 class="mb-4 home slogan">
                 Mainstream Source is dedicated to

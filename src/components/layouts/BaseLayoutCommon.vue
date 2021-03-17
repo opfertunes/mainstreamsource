@@ -8,7 +8,6 @@
           backgroundImage: `url(${require(`@/assets/images/hero_bg_1.jpg`)})`,
         }"
         data-stellar-background-ratio="0.5"
-        data-aos="fade"
       >
         <div class="container-fluid">
           <slot name="page-header"></slot>

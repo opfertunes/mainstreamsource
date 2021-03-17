@@ -3,7 +3,7 @@
     <BaseLayoutCommon>
       <template v-slot:page-header>
         <div class="row align-items-center justify-content-center">
-          <div class="col-md-7 text-center" data-aos="fade-up" data-aos-delay="400">
+          <div class="col-md-7 text-center">
             <div  v-for="(item, index) in searchDescription" :key="index" >
     
               <h2 class="text-white">
@@ -37,9 +37,7 @@
               <div class="col-md-3 pb-3" v-if="coverArtUrl">
                 <a
                   href="#"
-                  class="col1 unit-9 no-height aos-init aos-animate"
-                  data-aos="fade-up"
-                  data-aos-delay="100"
+                  class="col1 unit-9 no-height"
                   v-if="!loadingSearch"
                 >
 
