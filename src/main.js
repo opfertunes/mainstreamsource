@@ -12,6 +12,10 @@ import { publicPath } from '../vue.config'
 //import BootstrapVue from "bootstrap-vue";
 //import "bootstrap/dist/css/bootstrap.min.css";
 //import "bootstrap-vue/dist/bootstrap-vue.css";
+
+import './assets/css/style.css'
+import "./assets/css/custom.css";
+
 Vue.config.productionTip = false;
 
 Vue.component("v-select", vSelect);

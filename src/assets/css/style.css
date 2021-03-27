@@ -1224,15 +1224,6 @@ a:hover {
   color: #fff;
 }
 
-#date-countdown .countdown-block {
-  color: rgba(255, 255, 255, 0.4);
-}
-
-#date-countdown .label {
-  font-size: 40px;
-  color: #fff;
-}
-
 .next-match .image {
   width: 50px;
   border-radius: 50%;
