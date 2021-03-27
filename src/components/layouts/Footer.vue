@@ -3,7 +3,7 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-lg-4">
-          <div class="mb-5">
+          <div class="mb-1">
             <h3 class="footer-heading mb-4">
               About Mainstream
               <span class="text-primary">
@@ -21,8 +21,8 @@
           </div>
         </div>
 
-        <div class="col-lg-4 mb-5 mb-lg-0">
-          <div class="mb-5">
+        <div class="col-lg-4 mb-1 mb-lg-0">
+          <div class="mb-1">
             <h3 class="footer-heading mb-4">Subscribe</h3>
             <form action="#" method="post" class="site-block-subscribe">
               <div class="input-group mb-3">
@@ -67,8 +67,8 @@
             </div>
           </div>
         </div>
-
-        <div class="col-lg-4 mb-5 mb-lg-0">
+        
+        <div class="col-lg-4 mb-1 mb-lg-0">
           <div class="row mb-5">
             <div class="col-md-12">
               <h3 class="footer-heading mb-4">Navigations</h3>
@@ -89,7 +89,7 @@
             <div class="col-md-6 col-lg-6">
               <ul class="list-unstyled">
                 <li>
-                  <router-link to="/">License Trademard</router-link>
+                  <router-link to="/">License Trademark</router-link>
                 </li>
                 <li>
                   <router-link to="/">Search Catalogue</router-link>
@@ -98,8 +98,9 @@
             </div>
           </div>
         </div>
+
       </div>
-      <div class="row pt-5 mt-5 text-center">
+      <div class="row pt-1 mt-1 text-center">
         <div class="col-md-12">
           <p>
             Copyright &copy; 2020 All rights reserved | Mainstream
