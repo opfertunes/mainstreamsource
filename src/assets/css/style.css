@@ -2291,3 +2291,12 @@ figure figcaption {
   margin-right:auto;
   margin-left:auto
  }
+
+ #left-sidebar-logo {
+  margin-bottom: 12px;
+ }
+
+ .v-sidebar-menu .vsm--link_disabled {
+  opacity: 1.0 !important;
+  pointer-events: all !important;
+}

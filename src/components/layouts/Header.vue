@@ -1,69 +1,85 @@
 <template>
-  <div>
-    <div class="site-navbar">
-      <div class="container-fluid py-1">
-        <div class="row">
-          <left-side-bar :props-is-collapsed="collapse" @toggle-sidebar="toggleSidebar"></left-side-bar>
-          <div class="col-8 col-md-8 col-lg-5">
-            <h1 class="mb-0">
+
+<div>
+  <b-navbar toggleable="lg" type="dark" >
+    <div id="left-sidebar-logo">
+    <!--  
+    <div id="left-sidebar-toggler" v-b-toggle.sidebar-right>
+      <span data-v-146e2983="" class="icon-menu"></span>
+    </div>
+    -->
+    <!--
+    <button  v-b-toggle.sidebar-right 
+         type="button" 
+         aria-label="Toggle sidebar" 
+         class="navbar-toggler collapsed" 
+         style="overflow-anchor: none;">
+         <span class="navbar-toggler-icon"></span>
+    </button>
+    <b-sidebar id="sidebar-left" title="Sidebar" left shadow>
+      
+    </b-sidebar>
+    -->
+
+    <left-side-bar 
+        :props-is-collapsed="collapse" 
+        @toggle-sidebar="toggleSidebar">
+    </left-side-bar>
+
+    <b-navbar-brand href="#">
+      <h1 class="mb-0">
               <router-link to="/" class="text-white h2 mb-0">
                 <strong>
-                  <span class="icon-menu" @click="switchToggle"></span> Mainstream
+                  <!-- <span class="icon-menu" v-b-toggle.sidebar-left></span> -->
+                  
+                  <span class="icon-menu" @click="switchToggle"></span>  Mainstream
+
+
                   <span class="text-primary">
                     <i class="fa fa-headphones" aria-hidden="true"></i>
                   </span>&nbsp;Source
                 </strong>
               </router-link>
             </h1>
-          </div>
-          <div class="col-4 col-md-4 col-lg-7">
-            <nav class="site-navigation text-right text-md-right" role="navigation">
-              <div class="d-inline-block d-lg-none ml-md-0 mr-auto py-3">
-                <a href="#" class="site-menu-toggle js-menu-toggle text-white">
-                  <span class="icon-menu h3"></span>
-                </a>
-              </div>
-
-              <ul class="site-menu js-clone-nav d-none d-lg-block">
-                <li class="active">
-                  <router-link to="/">Home</router-link>
-                </li>
-                <li>
-                  <router-link to="/">Main</router-link>
-                </li>
-                <li>
-                  <router-link to="/">Contact Us</router-link>
-                </li>
-                <li>
-                  <router-link to="/">License Trademark</router-link>
-                </li>
-                <li>
-                  <router-link to="/">Search Catalogue</router-link>
-                </li>
-                <li>
-                  <a v-if="!isAuthenticated" 
-                     href="https://mainstreamsource.com/login.php?redirect_to=/newvue/">Login</a>
-
-                  <a v-if="isAuthenticated" 
-                     href="https://mainstreamsource.com/login.php?Action=logout&redirect_to=/newvue/">Logout</a>   
-                </li>
-              </ul>
-            </nav>
-          </div>
-        </div>
-      </div>
+    </b-navbar-brand>
     </div>
 
-    <div class="site-mobile-menu">
-      <div class="site-mobile-menu-header">
-        <div class="site-mobile-menu-close mt-3">
-          <span class="icon-close2 js-menu-toggle"></span>
-        </div>
-      </div>
-      <div class="site-mobile-menu-body"></div>
-    </div>
-    <!-- .site-mobile-menu -->
-  </div>
+
+    <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+
+    <b-collapse id="nav-collapse" is-nav>
+      <b-navbar-nav>
+        <b-nav-item href="#">Link</b-nav-item>
+        <b-nav-item href="#" disabled>Disabled</b-nav-item>
+      </b-navbar-nav>
+
+      <!-- Right aligned nav items -->
+      <b-navbar-nav class="ml-auto">
+        <b-nav-form>
+          <b-form-input size="sm" class="mr-sm-2" placeholder="Search"></b-form-input>
+          <b-button size="sm" class="my-2 my-sm-0" type="submit">Search</b-button>
+        </b-nav-form>
+
+        <b-nav-item-dropdown text="Lang" right>
+          <b-dropdown-item href="#">EN</b-dropdown-item>
+          <b-dropdown-item href="#">ES</b-dropdown-item>
+          <b-dropdown-item href="#">RU</b-dropdown-item>
+          <b-dropdown-item href="#">FA</b-dropdown-item>
+        </b-nav-item-dropdown>
+
+        <b-nav-item-dropdown right>
+          <!-- Using 'button-content' slot -->
+          <template #button-content>
+            <em>User</em>
+          </template>
+          <b-dropdown-item href="#">Profile</b-dropdown-item>
+          <b-dropdown-item href="#">Sign Out</b-dropdown-item>
+        </b-nav-item-dropdown>
+      </b-navbar-nav>
+    </b-collapse>
+  </b-navbar>
+</div>
+  
 </template>
 
 <script>

@@ -6,6 +6,7 @@ export function HomePageJs() {
 
   jQuery(document).ready(function($) {
     "use strict";
+    
 
     var siteMenuClone = function() {
       console.debug("HomePageJs.js.. siteMenuClone");
@@ -87,7 +88,7 @@ export function HomePageJs() {
         }
       });
     };
-    siteMenuClone();
+    //siteMenuClone();
 
 
 
