@@ -187,6 +187,7 @@ import WaveSurfer from "wavesurfer.js";
 import { HomePageJs } from "./../libs/HomePageJs";
 import ApiService from "@/api/ApiService";
 import {mapState, mapGetters, mapActions} from "vuex";
+import $ from "jquery";
 
 export default {
   name: "TrackList",
@@ -325,7 +326,6 @@ export default {
     },
     showSongInfo: function(song) {
       this.songDialogData = null;
-      let $ = window["jQuery"];
 
       ApiService.getSongDetails(song.song_id).then(data => {
 

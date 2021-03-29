@@ -30,6 +30,7 @@
 <script>
 
 import {mapGetters} from "vuex";
+import $ from "jquery";
 
 export default {
   name: "LeftSideBar",
@@ -45,7 +46,7 @@ export default {
     }
   },
   created: function() {
-    window.$(window).on("resize", this.handleWindowResize);
+    $(window).on("resize", this.handleWindowResize);
     this.handleWindowResize();
   },
   mounted: function() {
@@ -53,10 +54,10 @@ export default {
   },
   beforeUnmount: function() {
     
-    window.$(".vsm--link.vsm--link_level-1.vsm--link_disabled").off("mouseenter mouseleave");
-    window.$(".v-sidebar-menu").off("mouseenter mouseleave");
+    $(".vsm--link.vsm--link_level-1.vsm--link_disabled").off("mouseenter mouseleave");
+    $(".v-sidebar-menu").off("mouseenter mouseleave");
 
-    window.$(window).off("resize", this.handleWindowResize)
+    $(window).off("resize", this.handleWindowResize)
 
   },
   props: ['propsIsCollapsed'],
@@ -85,7 +86,7 @@ export default {
 
     parentLinkOnMouseEnter(event) {
         
-        const $el = window.$(event.currentTarget);
+        const $el = $(event.currentTarget);
         const categoryId = $el.attr("data-id");
 
         //console.debug(`>>>>> parentLinkOnMouseEnter ${categoryId}`);
@@ -116,12 +117,12 @@ export default {
        }
     },  
     onSidebarMouseOver() {
-      console.debug("sidebar IN");
+      //console.debug("sidebar IN");
       this.mouseInSidebar = true;
       this.mouseInPopover = false;
     },
     onSidebarMouseOut() {
-      console.debug("sidebar OUT");
+      //console.debug("sidebar OUT");
       setTimeout(() => {
          this.mouseInSidebar = false;
       }, 50);   
@@ -136,22 +137,22 @@ export default {
       }, 50);   
     },
     handleWindowResize() {
-      this.usePopoverMenu = window.$(window).width() >= 992;
+      this.usePopoverMenu = $(window).width() >= 992;
     },
     updateMouseOverEvents() {
       
       this.mouseInSidebar = false;
       this.mouseInPopover = false;
 
-      window.$(".vsm--link.vsm--link_level-1.vsm--link_disabled").off("mouseenter mouseleave"); 
+      $(".vsm--link.vsm--link_level-1.vsm--link_disabled").off("mouseenter mouseleave"); 
 
-      window.$(".v-sidebar-menu").off("mouseenter mouseleave");
+      $(".v-sidebar-menu").off("mouseenter mouseleave");
 
       if (!this.propsIsCollapsed && this.usePopoverMenu) {
          this.$nextTick(() => {
-          window.$(".vsm--link.vsm--link_level-1.vsm--link_disabled").hover(this.parentLinkOnMouseEnter, this.onMouseoutParentLink);
+          $(".vsm--link.vsm--link_level-1.vsm--link_disabled").hover(this.parentLinkOnMouseEnter, this.onMouseoutParentLink);
 
-          window.$(".v-sidebar-menu").hover(this.onSidebarMouseOver, this.onSidebarMouseOut);
+          $(".v-sidebar-menu").hover(this.onSidebarMouseOver, this.onSidebarMouseOut);
 
         })
       }
@@ -161,10 +162,10 @@ export default {
       }
     },
     checkMouseOutOfAll() {
-      console.debug({
-        sidebar: this.mouseInSidebar,
-        popover: this.mouseInPopover,
-      })
+      //console.debug({
+      //  sidebar: this.mouseInSidebar,
+      //  popover: this.mouseInPopover,
+      //})
 
       this.$nextTick(() => {
         if (
@@ -180,7 +181,7 @@ export default {
   },
   computed: {
     menu() {
-      console.debug("MENU!")
+      //console.debug("MENU!")
       const result = [
         {
           header: true,
