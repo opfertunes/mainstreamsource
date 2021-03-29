@@ -9,7 +9,6 @@
 
    
      <div slot="toggle-icon">
-       {{propsIsCollapsed}} {{usePopoverMenu}}
        <i class="fa fa-arrow-circle-left fa-2x"></i>
      </div>
 
@@ -101,7 +100,7 @@ export default {
         }
         else {
           //console.warn("SET TIMEOUT!", categoryId);
-          this.popoverTimeout = setTimeout(this.doShowPopup, 125, categoryId, $el.offset().top); 
+          this.popoverTimeout = setTimeout(this.doShowPopup, 60, categoryId, $el.offset().top); 
 
         }
 
