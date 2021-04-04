@@ -5,7 +5,8 @@
       :width-collapsed="'0px'"
       :hideToggle="propsIsCollapsed"
       :collapsed="propsIsCollapsed"
-      @toggle-collapse="toggleSidebar">
+      @toggle-collapse="toggleSidebar"
+      @item-click="onItemClick">
 
    
      <div slot="toggle-icon">
@@ -15,12 +16,23 @@
   </sidebar-menu>
   <div id="sidebar-popover" 
        v-if="popoverData && showPopover"
-       @mouseout="onPopoverMouseOut"
-       @mouseover="onPopoverMouseOver"
+       @mouseleave="onPopoverMouseOut"
+       @mouseenter="onPopoverMouseOver"
        :style="{top: `${popoverData.offsetTop}px`}">
+      <div v-for="album in popoverData.category.child" 
+           :key="album.id"
+           class="popover-item ml-2 pt-2 pb-2">
        
-       POPOVER THING!  {{popoverData}}
-
+        <a href="#"
+          class="popover-link"
+          @click="onItemClick(null, album, null)">
+         <i class="vsm--icon fa fa-play-circle-o pr-2"></i>
+          {{album.title}}
+          
+        </a>
+      
+      </div>   
+       
   </div>      
        
   </span>
@@ -28,7 +40,7 @@
 
 <script>
 
-import {mapGetters} from "vuex";
+import {mapActions, mapGetters} from "vuex";
 import $ from "jquery";
 
 export default {
@@ -64,17 +76,26 @@ export default {
     toggleSidebar(isCollapsed) {
       this.$emit('toggle-sidebar', isCollapsed);
     },
+    onItemClick(event, item) {
+      
+      if (item.attributes && item.attributes["data-params"] && item.attributes["data-url"]) {
+        
+        this.$router.push(item.attributes["data-url"]).catch(() => {});
+        this.searchFromQueryParams(item.attributes["data-params"])
+          .then(() => {
+            this.$emit('toggle-sidebar', true);
+          });  
+      }
+    },
 
     doShowPopup(categoryId, offsetTop) {
       
-      //console.debug("DOSHOW POPUP: ", categoryId, offsetTop);
-
       const parentLink = this.menu.find(menuItem => {
         return menuItem.attributes && menuItem.attributes["data-id"] === categoryId;
       })
 
       if (parentLink) {
-        //console.debug("Set popover data! ", parentLink);
+
         this.popoverData = {category: parentLink,
                             offsetTop}; 
         this.showPopover = true;
@@ -88,18 +109,15 @@ export default {
         const $el = $(event.currentTarget);
         const categoryId = $el.attr("data-id");
 
-        //console.debug(`>>>>> parentLinkOnMouseEnter ${categoryId}`);
         if (this.popoverTimeout) {
-          //console.debug("popoverTimeout not null, LEAVE")
           clearTimeout(this.popoverTimeout);
-         this.popoverTimeout = null;
+          this.popoverTimeout = null;
+          
           return;  
         } else if (this.popoverData && this.popoverData.category.categoryId === categoryId) {
-          //console.debug("SAME CATEGORYID, LEAVE")
           return;  
         }
         else {
-          //console.warn("SET TIMEOUT!", categoryId);
           this.popoverTimeout = setTimeout(this.doShowPopup, 60, categoryId, $el.offset().top); 
 
         }
@@ -108,20 +126,16 @@ export default {
        
     },
     parentLinkOnMouseLeave() {
-       //console.debug("<<<<<< parentLinkOnMouseLEAVE");
        if (this.popoverTimeout) {
-         //console.debug("CLEAR THE TIMEOUT!")
          clearTimeout(this.popoverTimeout);
          this.popoverTimeout = null;
        }
     },  
     onSidebarMouseOver() {
-      //console.debug("sidebar IN");
       this.mouseInSidebar = true;
       this.mouseInPopover = false;
     },
     onSidebarMouseOut() {
-      //console.debug("sidebar OUT");
       setTimeout(() => {
          this.mouseInSidebar = false;
       }, 50);   
@@ -176,19 +190,26 @@ export default {
 
       })
       
-    } 
+    },
+    ...mapActions("search", ["searchFromQueryParams"]), 
   },
+
   computed: {
     menu() {
-      //console.debug("MENU!")
+
       const result = [
         {
           header: true,
           title: 'Mainstream Source',
           hiddenOnCollapse: true
         }, 
+        {
+          href: '/',
+          title: 'Home',
+          icon: 'fa fa-user'
+        }, 
         ...this.leftMenuTree.map(menuItem => {
-          //console.debug(this.usePopoverMenu, JSON.parse(JSON.stringify(menuItem)))
+          
           return {
             //href: `/tracks?cd_category=${menuItem.cdCategory.category_id}`,
             title: menuItem.cdCategory.description,
@@ -198,9 +219,12 @@ export default {
             disabled: this.usePopoverMenu,
             child: menuItem.cds.map(cd => {
               return {
-                href: `/tracks?cd=${cd.cd_id}`,
+                id: cd.cd_id,
+                href: this.usePopoverMenu ? null: `/tracks?cd=${cd.cd_id}`,
                 title: cd.title,
+                exactPath: false,
                 icon: 'fa fa-play-circle-o',
+                attributes: {"data-params": {cd: cd.cd_id}, "data-url": `/tracks?cd=${cd.cd_id}`}
               }
             })
           }
@@ -240,13 +264,39 @@ export default {
 <style scoped>
 
 #sidebar-popover {
+  background-color: #2a2a2e;
   position: absolute;
   z-index: 2000;
   left: 350px;
-  background-color: #fff;
-  width: 400px;
+  
   border: 1px solid;
   color: #000;
+  min-height: 150px;
+  min-width: 300px;
 }
+.popover-item {
+  background-color: #2a2a2e;
+}
+.popover-item:hover {
+    background-color: rgba(30,30,33,0.5);
+}
+.popover-link {
+  color: #fff;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 400;
+  padding: 10px;
+  line-height: 30px;
+  text-decoration: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  z-index: 20;
+  -webkit-transition: 0.3s all ease;
+  transition: 0.3s all ease;
+}
+
+
 
 </style>

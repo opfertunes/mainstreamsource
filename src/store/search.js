@@ -26,6 +26,7 @@ export function defaultState() {
         searchResults: null,
         hasSearched: false,
         loadingSearch: false,
+        searchErrorMessage: null, 
    };
 }
 
@@ -129,6 +130,7 @@ export const mutations = {
         state.searchResults =  null
         state.hasSearched =  false;
         state.loadingSearch = false;
+        state.searchErrorMessage = null;
 
     },
 
@@ -150,6 +152,10 @@ export const mutations = {
             Vue.set(state, key, data[keys[key]]);
         });  
     },
+
+    setSearchErrorMessage(state, value) {
+        state.searchErrorMessage = value;
+    }
     
 };
 
@@ -209,6 +215,58 @@ export const actions = {
         .finally(() => {
             commit("setLoadingSearch", false);
         });
+    },
+    async searchFromQueryParams({state, dispatch, commit}, queryParams) {
+        await dispatch("loadSearchLookups");
+
+        if (!Object.keys(queryParams).length) {
+            commit("setSearchErrorMessage", "No search criteria were entered")
+            return;
+        }
+        
+        const searchData = {}
+        let lookupList, pkName, pk, storeKey, description;
+
+        if (queryParams.genre) {
+            pk = queryParams.genre;
+            lookupList = state.genres;
+            pkName = "genre_id";
+            storeKey = "genres";
+            description = "Genre"
+
+        }
+        else if (queryParams.cd_category) {
+            pk = queryParams.cd_category;
+            lookupList = state.cdCategories;
+            pkName = "category_id";
+            storeKey = "cdCategories";
+            description = "CD Category"
+
+        }
+        else if (queryParams.cd) {
+            pk = queryParams.cd;
+            lookupList = state.cds;
+            pkName = "cd_id";
+            storeKey = "cds";
+            description = "CD"
+        }
+
+        if (!pk || !lookupList || !pkName || !storeKey || !description) {
+            commit("setSearchErrorMessage", "Please enter a valid search");
+
+            return;
+        }
+
+        const searchObj = lookupList.find(obj => String(obj[pkName]) === String(pk));
+        if (!searchObj) {
+            commit("setSearchErrorMessage", `${description} not found for id ${pk}`);
+            return;
+        }
+
+        searchData[storeKey] = [searchObj];
+
+        await dispatch("setSearchData", searchData);
+
     },
     clearSearch({commit}) {
         commit("clearSearch");

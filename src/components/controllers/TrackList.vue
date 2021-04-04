@@ -18,11 +18,11 @@
             <div v-if="loadingSearch" class="d-flex justify-content-center mt-2 mb-3">
               <em>Loading...</em>
             </div>
-            <div v-if="errorMessage" class="d-flex justify-content-center mt-2 mb-3">
-              {{errorMessage}}
+            <div v-if="searchErrorMessage" class="d-flex justify-content-center mt-2 mb-3">
+              {{searchErrorMessage}}
             </div>
 
-            <p v-if="!loadingSearch && !errorMessage && searchResults">
+            <p v-if="!loadingSearch && !searchErrorMessage && searchResults">
               <span v-if="searchResults.length">Browse and listen to music from the list below.</span>
               <span v-else>No tracks found for your search.</span>
             </p>
@@ -184,7 +184,6 @@
 <script>
 import BaseLayoutCommon from "./../layouts/BaseLayoutCommon";
 import WaveSurfer from "wavesurfer.js";
-import { HomePageJs } from "./../libs/HomePageJs";
 import ApiService from "@/api/ApiService";
 import {mapState, mapGetters, mapActions} from "vuex";
 import $ from "jquery";
@@ -203,8 +202,6 @@ export default {
       player: null,
       componentKey: 0,
       pause: false,
-      queryParams: {},
-      errorMessage: null,
       songDialogData: null,
     };
   },
@@ -214,68 +211,8 @@ export default {
 
     // if we have not called this page from BaseLayoutCover, then
     // this is a full page load and we need to initialize the search data here: 
-    this.queryParams = this.$route.query;
+    this.searchFromQueryParams(this.$route.query);
 
-    if (!Object.keys(this.queryParams).length) {
-      this.errorMessage = "No search criteria were entered"
-      return;
-    }
-    
-    this.loadSearchLookups().then(() => {
-      const searchData = {}
-      let lookupList, pkName, pk, storeKey, description;
-
-      if (this.queryParams.genre) {
-        pk = this.queryParams.genre;
-        lookupList = this.genres;
-        pkName = "genre_id";
-        storeKey = "genres";
-        description = "Genre"
-
-      }
-      else if (this.queryParams.cd_category) {
-        pk = this.queryParams.cd_category;
-        lookupList = this.cdCategories;
-        pkName = "category_id";
-        storeKey = "cdCategories";
-        description = "CD Category"
-
-      }
-      else if (this.queryParams.cd) {
-        pk = this.queryParams.cd;
-        lookupList = this.cds;
-        pkName = "cd_id";
-        storeKey = "cds";
-        description = "CD"
-      }
-
-      if (!pk || !lookupList || !pkName || !storeKey || !description) {
-
-        this.errorMessage = "Please enter a valid search"
-
-        return;
-      }
-
-
-
-      const searchObj = lookupList.find(obj => String(obj[pkName]) === String(pk));
-      if (!searchObj) {
-        this.errorMessage = `${description} not found for id ${pk}`
-        return;
-      }
-
-      searchData[storeKey] = [searchObj];
-
-      this.setSearchData(searchData);
-      
-    });
-  
-  },
-  mounted() {
-    // this is wonky:
-    setTimeout(() => {
-      HomePageJs();
-    }, 1000);
   },
   methods: {
     playMusic: function(i) {
@@ -344,7 +281,7 @@ export default {
     onModalClosed: function() {
       this.songDialogData = null;
     },
-    ...mapActions("search", ["loadSearchLookups", "setSearchData"]),
+    ...mapActions("search", ["searchFromQueryParams", "loadSearchLookups", "setSearchData"]),
   },
   computed: {
     coverArtUrl: function() {
@@ -355,7 +292,7 @@ export default {
                            "genres", 
                            "cdCategories",
                            "cds", 
-                           "loadingSearch", "searchData"]),
+                           "loadingSearch", "searchData", "searchErrorMessage"]),
     ...mapGetters("search", ["searchDescription", "hasSearched" ]),
     ...mapGetters("user", ["isAuthenticated" ]),
   },
