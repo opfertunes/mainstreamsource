@@ -271,7 +271,7 @@ export default {
   
   border: 1px solid;
   color: #000;
-  min-height: 150px;
+  /*min-height: 150px; */
   min-width: 300px;
 }
 .popover-item {
