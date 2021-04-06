@@ -3,22 +3,34 @@
   <sidebar-menu
       :menu="propsIsCollapsed ? blank : menu"
       :width-collapsed="'0px'"
-      :hideToggle="propsIsCollapsed"
+      :hideToggle="true"
       :collapsed="propsIsCollapsed"
       @toggle-collapse="toggleSidebar"
       @item-click="onItemClick">
 
-   
+     <div slot="header">
+       <div class="vsm--header pr-2">Mainstream Source
+         <button 
+            type="button" 
+            aria-label="Close" 
+            class="close text-light"
+            @click="closeSidebar">×</button>
+     
+       </div>
+
+     </div>
+     <!--
      <div slot="toggle-icon">
        <i class="fa fa-arrow-circle-left fa-2x"></i>
      </div>
+     -->
 
   </sidebar-menu>
   <div id="sidebar-popover" 
        v-if="popoverData && showPopover"
        @mouseleave="onPopoverMouseOut"
        @mouseenter="onPopoverMouseOver"
-       :style="{top: `${popoverData.offsetTop}px`}">
+       :style="{top: `${popoverData.offsetTop}px`}">      
       <div v-for="album in popoverData.category.child" 
            :key="album.id"
            class="popover-item ml-2 pt-2 pb-2">
@@ -75,6 +87,12 @@ export default {
   methods: {
     toggleSidebar(isCollapsed) {
       this.$emit('toggle-sidebar', isCollapsed);
+    },
+    closeSidebar() {
+      this.popoverData = null;
+      this.$emit('toggle-sidebar', true);
+      
+
     },
     onItemClick(event, item) {
       
@@ -184,7 +202,6 @@ export default {
         if (
          !this.mouseInSidebar && 
          !this.mouseInPopover ) {
-           //console.warn("CLOSE");
         this.popoverData = null;
       }
 
@@ -198,11 +215,11 @@ export default {
     menu() {
 
       const result = [
-        {
-          header: true,
-          title: 'Mainstream Source',
-          hiddenOnCollapse: true
-        }, 
+        //{
+        //  header: true,
+        //  title: 'Mainstream Source',
+        //  hiddenOnCollapse: true
+        //}, 
         {
           href: '/',
           title: 'Home',
@@ -297,6 +314,12 @@ export default {
   transition: 0.3s all ease;
 }
 
-
+.v-sidebar-menu.vsm_collapsed .vsm--header {
+  display: none;
+}
+.v-sidebar-menu .vsm--header {
+  background: #181a1e;  
+  padding-left: 85px;
+}
 
 </style>

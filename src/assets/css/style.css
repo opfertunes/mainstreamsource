@@ -2349,3 +2349,31 @@ figure figcaption {
     left:85px;
   }
 }
+
+
+
+.vsm--header .right-filler {
+  top: 0px;
+  right: 0px;
+  position: absolute;
+  width: 15px;
+  background-color: #13171d;
+  height: 44px;
+}
+
+/* make the left sidebar scrollbar look nicer */
+.vsm--scroll-wrapper {
+  scrollbar-color: #666 #13171d;
+  scrollbar-width: 16px;
+}
+
+
+.vsm--scroll-wrapper::-webkit-scrollbar {
+  background: #13171d;
+  width: 16px;
+}
+
+.vsm--scroll-wrapper::-webkit-scrollbar-thumb {
+  background: #666;
+  border-radius: 16px;
+}
