@@ -30,11 +30,15 @@
        v-if="popoverData && showPopover"
        @mouseleave="onPopoverMouseOut"
        @mouseenter="onPopoverMouseOver"
-       :style="{top: `${popoverData.offsetTop}px`}">      
+       :style="{top: `${popoverData.offsetTop}px`}"> 
+      <div class="header pt-2 pb-2 text-center text-nowrap">
+        <b>{{popoverData.category.title}}</b>
+      </div> 
+      <div class="sidebar-popover-scroller text-nowrap">     
       <div v-for="album in popoverData.category.child" 
            :key="album.id"
-           class="popover-item ml-2 pt-2 pb-2">
-       
+           class="popover-item pt-2 pb-2">
+        
         <a href="#"
           class="popover-link"
           @click="onItemClick(null, album, null)">
@@ -42,8 +46,10 @@
           {{album.title}}
           
         </a>
+        
       
       </div>   
+      </div>
        
   </div>      
        
@@ -106,19 +112,13 @@ export default {
       }
     },
 
-    doShowPopup(categoryId, offsetTop) {
-      
-      const parentLink = this.menu.find(menuItem => {
-        return menuItem.attributes && menuItem.attributes["data-id"] === categoryId;
-      })
-
-      if (parentLink) {
-
-        this.popoverData = {category: parentLink,
+    doShowPopup(category, offsetTop) {
+            
+      this.popoverData = {category,
                             offsetTop}; 
-        this.showPopover = true;
-      } 
-
+                   
+      this.showPopover = true;
+  
       this.popoverTimeout = null;
     },
 
@@ -136,9 +136,26 @@ export default {
           return;  
         }
         else {
-          this.popoverTimeout = setTimeout(this.doShowPopup, 60, categoryId, $el.offset().top); 
+          const parentLink = this.menu.find(menuItem => {
+            return menuItem.attributes && menuItem.attributes["data-id"] === categoryId;
+          });
 
-        }
+          if (parentLink) {
+            const itemCount = parentLink.child.length;
+            const requiredHeight = (itemCount * 53) + 46;
+            let offsetTop = $el.offset().top - $(window).scrollTop();
+            
+            if (offsetTop + requiredHeight > $(window).height()) {
+              offsetTop -= (offsetTop + requiredHeight) - $(window).height();
+              if (offsetTop < 10) {
+                offsetTop = 10;
+              }
+            } 
+        
+            this.popoverTimeout = setTimeout(this.doShowPopup, 60, parentLink, offsetTop); 
+   
+         }
+        }  
 
         
        
@@ -285,11 +302,21 @@ export default {
   position: absolute;
   z-index: 2000;
   left: 350px;
-  
   border: 1px solid;
   color: #000;
-  /*min-height: 150px; */
-  min-width: 300px;
+  min-width: 450px; 
+}
+
+#sidebar-popover .header {
+  background: #181a1e;
+  color: rgba(255,255,255,0.7);
+}
+
+#sidebar-popover .sidebar-popover-scroller {
+  max-height: calc(100vh - 20px - 75px);
+  width: auto;    
+  /*padding-right: 20px;*/
+  overflow-y: auto;
 }
 .popover-item {
   background-color: #2a2a2e;
@@ -302,7 +329,10 @@ export default {
   cursor: pointer;
   font-size: 16px;
   font-weight: 400;
-  padding: 10px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 10px;
+  padding-right: 0px;
   line-height: 30px;
   text-decoration: none;
   -webkit-user-select: none;

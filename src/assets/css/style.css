@@ -2362,18 +2362,17 @@ figure figcaption {
 }
 
 /* make the left sidebar scrollbar look nicer */
-.vsm--scroll-wrapper {
+html {
   scrollbar-color: #666 #13171d;
   scrollbar-width: 16px;
 }
 
-
-.vsm--scroll-wrapper::-webkit-scrollbar {
+html::-webkit-scrollbar {
   background: #13171d;
   width: 16px;
 }
 
-.vsm--scroll-wrapper::-webkit-scrollbar-thumb {
+html::-webkit-scrollbar-thumb {
   background: #666;
   border-radius: 16px;
 }
