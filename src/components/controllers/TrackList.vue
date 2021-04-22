@@ -6,12 +6,12 @@
           <div class="col-md-7 text-center">
             <div  v-for="(item, index) in searchDescription" :key="index" >
     
-              <h2 class="text-white">
+              <h2 v-if="item.title !== 'CD'">
                 {{item.title}}
               </h2>
-              <div class="ml-4" v-for="(searchItem, itemIndex) in item.searchItems" :key="itemIndex">
+              <h2 class="ml-4 text-white" v-for="(searchItem, itemIndex) in item.searchItems" :key="itemIndex">
               {{searchItem}}
-              </div> 
+              </h2> 
 
             </div>
     
@@ -34,7 +34,7 @@
         <div class="site-section">
           <div class="container-fluid">
             <div class="row">
-              <div class="col-md-3 pb-3" v-if="coverArtUrl">
+              <div class="col-md-3 pb-3 text-center" v-if="currentCd">
                 <a
                   href="#"
                   class="col1 unit-9 no-height"
@@ -44,12 +44,13 @@
                   <img
                     class="image"
                     :src="coverArtUrl"/>              
-
-                  <div class="unit-9-content" v-if="false">
-                    <h2>Album Title</h2>
-                    <span>Other Info</span>
-                  </div>
                 </a>
+                 <div class="unit-9 mt-3"> 
+                <div class="unit-9-content pl-2 pr-2">    
+                    <span>{{currentCd.description}}</span>
+                </div>
+                 </div>
+
               </div>
               <div class="col-md-9" v-if="searchResults">
                 <div
@@ -59,15 +60,16 @@
                 >
                   <div class="text" style="padding: 0px;">
                     <div class="row">
-                      <div class="col-sm-12">
-                        <h3 class="font-weight-light" style>
-                          <span class="action-icon">
+                      <div class="col-md-6 pr-0 text-nowrap">
+                        <h3 class="font-weight-light">
+                          <span class="action-icon left text-nowrap">
                             <a><i
                               class="fa fa-play-circle"
                               aria-hidden="true"
                               v-on:click="playMusic(index)"
                               v-if="playIndex != index || (playIndex == index && pause)"
-                            ></i></a>
+                            ></i>
+                            </a>
                             <i
                               class="fa fa-pause"
                               aria-hidden="true"
@@ -75,24 +77,25 @@
                               v-if="playIndex == index && !pause"
                             ></i>
                           </span>
-                          <span class="action-icon">
+                          <span class="action-icon song-index-title text-nowrap">{{ index + 1 }}: {{ song.title }}</span>
+                         </h3>
+                      </div>
+                      <div class="col-md-6">
+                        <h3 class="font-weight-light track-info-column">                 
+                          <span v-if="isAuthenticated" class="action-icon info-icons">
+                            <i class="fa fa-download" aria-hidden="true"></i>
+                          </span>
+                          <span class="action-icon info-icons bpm-outer">
+                            <span class="track-bpm">{{song.tempo}}</span>
+                          </span>
+                          <span class="action-icon info-icons song-duration">{{song.duration}}</span>
+
+                          <span class="action-icon info-icons">
                             <i class="fa fa-info-circle" aria-hidden="true"
                                v-on:click="showSongInfo(song)"></i>
                           </span>
 
-                          <span v-if="isAuthenticated" class="action-icon">
-                            <i class="fa fa-download" aria-hidden="true"></i>
-                          </span>
-
-                          <span class="song-index-title">{{ index + 1 }}: {{ song.title }}</span>
-
-                          <span
-                            style="float: right;
-                                  position: relative;
-                                  font-size: 17px;
-                                  right: 10px;
-                                  top: 10px;"
-                          >{{song.duration}}</span>
+                                      
                         </h3>
                       </div>
 
@@ -288,6 +291,11 @@ export default {
       return this.searchData.cds && this.searchData.cds.length ?
         `https://mainstreamsource.com/${this.searchData.cds[0].image_loc}` : null;
     },
+    currentCd: function() {
+      return this.searchData.cds && this.searchData.cds.length ?
+        this.searchData.cds[0] : null; 
+    },
+
     ...mapState("search", ["searchResults", 
                            "genres", 
                            "cdCategories",
@@ -314,18 +322,82 @@ i.fa {
   cursor:pointer;
 }
 
-.action-icon {
-  margin-left: 12px; 
-  position: relative; 
-  top: 2px;
-}
-
 .song-index-title {
    font-size: 16px; 
    color: #e3207b; 
-   margin-left: 20px; 
+   margin-left: 0px; 
    position: relative; 
    top: -1px; left: 0px;
+}
+
+.action-icon {
+  margin-right: 12px; 
+  margin-top: 4px;
+  margin-bottom: 8px;
+
+}
+.action-icon.left {
+  margin-left: 12px;
+  float: left;
+}
+
+.action-icon.info-icons {
+  position: relative;
+  top: -2px
+}
+
+.action-icon.info-icons.song-duration {
+  top: -4px;
+  font-size: 17px;
+}
+
+.action-icon.info-icons.bpm-outer{
+  top: -4px; 
+  margin-right: 0px;
+  margin-left: 24px;
+}
+
+.track-bpm {
+  display: inline-block; 
+  white-space: nowrap;
+  font-size: .825rem;
+  line-height: inherit;
+  -webkit-transform: translate(-50%,0);
+  -ms-transform: translate(-50%,0);
+  transform: translate(-50%,0);
+  border-width: thin;
+  border-style: solid;
+  border-color: inherit;
+  border-radius: .9rem;
+  font-weight: bolder;
+  padding: .125rem .1875rem .1875rem;
+  height: 1.45rem;
+  width: 2.1875rem;
+  color: inherit;
+  text-align: center;
+}
+
+.track-info-column{
+  margin-left: 12px;
+  text-align: left !important;
+}
+
+@media (min-width:768px) { /*576*/
+  .track-info-column{
+    text-align: right !important;
+  }
+
+  .action-icon.info-icons {
+    top: 5px
+  }
+
+  .action-icon.info-icons.song-duration {
+    top: 2px;
+  }
+  .action-icon.info-icons.bpm-outer{
+    top: 1px; 
+  }
+
 }
             
 </style>

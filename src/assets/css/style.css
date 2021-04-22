@@ -739,7 +739,7 @@ a:hover {
 .site-blocks-cover.inner-page-cover,
 .site-blocks-cover.inner-page-cover .row {
   height: auto;
-  min-height: 350px;
+  min-height: 180px;
 }
 .site-blocks-cover .sub-text {
   font-size: 1.1rem;
@@ -756,8 +756,8 @@ a:hover {
   text-transform: uppercase;
 }
 .site-blocks-cover p {
-  color: #fff;
-  font-size: 1.5rem;
+  /*color: #fff;*/
+  font-size: 1.25rem;
   line-height: 1.5;
 }
 .site-blocks-cover .intro-text {
@@ -1839,7 +1839,7 @@ a:hover {
   background-size: cover;
   background-position: center center;
   background-repeat: none;
-  height: 300px;
+  /*height: 300px;*/
   position: relative;
   display: block;
   overflow: hidden;
@@ -1858,23 +1858,14 @@ a:hover {
   -ms-transform: scale(1.05);
   transform: scale(1.05);
 }
-.unit-9.no-height {
-  height: auto;
-}
-.unit-9.no-height .image {
-  height: auto;
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-}
+
+
 .unit-9 .unit-9-content {
   -webkit-transition: 0.3s all ease-in-out;
   -o-transition: 0.3s all ease-in-out;
   transition: 0.3s all ease-in-out;
-  position: absolute;
-  bottom: 0;
+  /*position: absolute;
+  bottom: 0;*/
 }
 .unit-9 h2 {
   padding-left: 10px;
@@ -2200,7 +2191,7 @@ figure figcaption {
 }
 
 .unit-9 {
-  height: 160px !important;
+  /*height: 160px !important;*/
   cursor: pointer;
 }
 
