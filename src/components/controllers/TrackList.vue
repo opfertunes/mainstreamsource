@@ -115,16 +115,32 @@
     </BaseLayoutCommon>
 
     <!-- Modal -->
-    <div class="modal fade" id="trackInfo" tabindex="-1" role="dialog" aria-labelledby="trackInfoLabel" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content track-info" v-if="songDialogData">
-          <div class="modal-header">
-            <h5 class="modal-title" id="trackInfoLabel">{{songDialogData.song.title}} </h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
+
+    <b-modal 
+      id="trackInfo" 
+      ref="trackInfo" 
+      ok-only
+      centered
+      variant="dark"
+      header-class="track-detail-header"
+      header-bg-variant="dark"
+      header-text-variant="light"
+      body-bg-variant="dark"
+      body-text-variant="light"
+      footer-bg-variant="dark"
+      footer-text-variant="light"> 
+
+      <template #modal-header="{cancel }">
+          <img class="header-album-cover"
+            :src="coverArtUrl"/> 
+ 
+          <h5 class="modal-title">{{songDialogData.song.title}}</h5>
+          <button @click="cancel()" type="button" aria-label="Close" class="close text-light">×</button>
+      
+       
+      </template>
+      
+      <div class="track-info" v-if="songDialogData">          
             <p class="description">
               {{songDialogData.song.description}} 
             </p>
@@ -173,14 +189,12 @@
                 Meter: {{songDialogData.song.meter}}
               </div>  
             </div>  
-            
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          </div>
+        
         </div>
-      </div>
-    </div>
+    </b-modal>  
+
+
+
   </div>
 </template>
 
@@ -189,7 +203,7 @@ import BaseLayoutCommon from "./../layouts/BaseLayoutCommon";
 import WaveSurfer from "wavesurfer.js";
 import ApiService from "@/api/ApiService";
 import {mapState, mapGetters, mapActions} from "vuex";
-import $ from "jquery";
+//import $ from "jquery";
 
 export default {
   name: "TrackList",
@@ -273,9 +287,12 @@ export default {
           song,
           details: data.data
         }
-        $('#trackInfo').modal().on('hide.bs.modal', function(){
-           this.songDialogData = null;
-        })
+
+        this.$bvModal.show("trackInfo")
+
+        //$('#trackInfo').modal().on('hide.bs.modal', function(){
+        //   this.songDialogData = null;
+        //})
 
       })
 
@@ -380,6 +397,11 @@ i.fa {
 .track-info-column{
   margin-left: 12px;
   text-align: left !important;
+}
+
+.header-album-cover {
+  max-width: 85px;
+  margin-right: 20px;
 }
 
 @media (min-width:768px) { /*576*/
