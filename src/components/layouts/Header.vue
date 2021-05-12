@@ -17,11 +17,8 @@
               <router-link to="/" class="text-white h2 mb-0">
                 <strong id="logo-text">
                   <!-- <span class="icon-menu" v-b-toggle.sidebar-left></span> -->
-                  
-                   Mainstream 
-                  <span class="text-primary">
-                    <i class="fa fa-headphones" aria-hidden="true"></i>
-                  </span>&nbsp;Source
+                  <img src="@/assets/images/mss-logo.png" />
+            
                 </strong>
               </router-link>
             </h1>
