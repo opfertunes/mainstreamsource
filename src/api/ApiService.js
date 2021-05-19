@@ -29,6 +29,8 @@ const apiClient = axios.create({
    maxContentLength: 50 * 1000 * 1000
 });
 
+
+
 // Sets the AUTH token for any request. Unused, but here for reference
 
 /*
@@ -52,7 +54,7 @@ export default {
     * we'll use just the lookup tables like genre/keywords etc.
     */
     getSearchableItems() {
-        return apiClient.get("/", {
+        return apiClient.get("/cgi-bin/services/mss_data_service.pl", {
                 params: {service: 'get_searchable_items'},
                 crossdomain: true}
             );
@@ -65,7 +67,7 @@ export default {
     */
    getSearchResults(searchData) {
         
-       return apiClient.get("/", {params:{service: 'get_search_results',
+       return apiClient.get("/cgi-bin/services/mss_data_service.pl", {params:{service: 'get_search_results',
                                           cond: JSON.stringify(searchData || {})}});
    },
    /**
@@ -76,8 +78,12 @@ export default {
     */
    getSongDetails(songId) {
         
-      return apiClient.get("/", {params:{service: 'get_song_detail',
+      return apiClient.get("/cgi-bin/services/mss_data_service.pl", {params:{service: 'get_song_detail',
                                          song_id: songId }});
   },
+
+  getProjects(){
+     return apiClient.get("/ajax_projects.php", {params: {'Action': 'project_list'}});
+  }
 
 };

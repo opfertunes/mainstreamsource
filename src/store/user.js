@@ -12,8 +12,9 @@ export function defaultState() {
 // eslint-disable-next-line func-style
 export const getters = {
    authData: (state) => state.authData,
-   isAuthenticated: (state) => {
-      return state.authData && state.authData.customer_id;
+   isAuthenticated: (/*state*/) => {
+      return true;
+      //return state.authData && state.authData.customer_id;
    }   
 };
 
@@ -26,7 +27,7 @@ export const mutations = {
 
 export const actions = {
    loadAuthUserData: ({commit}) => {
-      fetch('https://mainstreamsource.com/login.php?Action=me')
+      fetch(`${process.env.VUE_APP_MAINSTREAM_API_URL}/login.php?Action=me`)
       .then(response => response.json())
       .then(data => commit("setAuthData", data))
    },

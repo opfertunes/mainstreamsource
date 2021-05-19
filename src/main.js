@@ -3,6 +3,7 @@ import App from "./App.vue";
 import VueRouter from "vue-router";
 import HomePage from "./components/controllers/HomePage";
 import TrackList from "./components/controllers/TrackList";
+import Projects from "./components/controllers/Projects";
 import vSelect from "vue-select";
 import "vue-select/dist/vue-select.css";
 import VueSidebarMenu from 'vue-sidebar-menu';
@@ -78,6 +79,13 @@ const routes = [
                     content: "MainstreamSource Genre Track List page",
                 },
             ],
+        },
+    },
+    {
+        path: "/projects",
+        component: Projects,
+        meta: {
+            title: "MainstreamSource | My Projects",
         },
     },
     {
