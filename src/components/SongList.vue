@@ -43,7 +43,7 @@
                 </span>
 
 
-                <span class="action-icon info-icons" v-if="showDeleteIcon">
+                <span class="action-icon info-icons" v-if="project">
                 <i class="fa fa-times-circle" aria-hidden="true"
                     v-on:click="deleteSong(song)"></i>
                 </span>
@@ -152,7 +152,7 @@ export default {
   props: {
     songs: Array,
     coverArtUrl: String,
-    showDeleteIcon: Boolean,
+    project: Object,
   },
   data() {
     return {
@@ -255,12 +255,19 @@ export default {
         footerBgVariant:"dark",
         footerTextVariant:"light",
       }).then((value) => {
-            console.debug(value);
-            //this.boxOne = value
+          if (!value) {
+            return;
+          }      
+          ApiService.deleteSongFromProject(song.project_song_id, this.project.project_id)
+          .then(() => {
+            this.$emit("songDeleted", song);
           })
-          .catch(() => {
+          //this.$emit("songDeleted", song);
+            
+      })
+      .catch(() => {
             // An error occurred
-          })
+      })
     }
     //...mapActions("search", ["loadSearchLookups", "setSearchData"]),
   },

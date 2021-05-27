@@ -60,7 +60,11 @@
                 </div>
                 <div class="row">
                   <div class="col">
-                    <song-list :songs="selectedProject.songs" :coverArtUrl="null" :showDeleteIcon="true" />
+                    <song-list 
+                    :songs="selectedProject.songs" 
+                    :coverArtUrl="null" 
+                    :project="selectedProject"
+                    @songDeleted="onSongDeleted" />
                       
                   </div>
                 </div>    
@@ -80,8 +84,9 @@
 </template>
 
 <script>
+/* eslint-disable no-unused-vars */
 import BaseLayoutCommon from "./../layouts/BaseLayoutCommon";
-//import ApiService from "@/api/ApiService";
+import ApiService from "@/api/ApiService";
 import SongList from "@/components/SongList";
 import {mapState, mapGetters, mapActions} from "vuex";
 //import $ from "jquery";
@@ -104,19 +109,24 @@ export default {
     };
   },
   created() {
-    //ApiService.getProjects().then(data => {
-    //  console.debug(data);
-    //})
+    
+    ApiService.getProjects().then((result) => {
+      this.projectsList = result;
+    })
 
-    this.projectsList = [
-      {"project_id":"23","name":"Filmy Cue 1","description":"dark, brooding","song_count":"7"},
-      {"project_id":"31","name":"foo proj","description":"desc","song_count":"0"},
-      {"project_id":"30","name":"Reboot","description":"Next Level","song_count":"0"}
-    ];
+    //this.projectsList = [
+    //  {"project_id":"23","name":"Filmy Cue 1","description":"dark, brooding","song_count":"7"},
+    //  {"project_id":"31","name":"foo proj","description":"desc","song_count":"0"},
+    //  {"project_id":"30","name":"Reboot","description":"Next Level","song_count":"0"}
+    //];
   },
   methods: {
     setSelectedProject(project) {
-      console.debug(project);
+
+      ApiService.getProjectDetails(project.project_id).then((data) => {
+        this.selectedProject = data;
+      })
+      /* 
       this.selectedProject = {
         "project_id":"23",
         "customer_id":"14",
@@ -131,6 +141,7 @@ export default {
           {"song_id":"6517","snippet_file": "3OR4TIMESSNIP.mp3", "part_number":"67408001","title":"MSO Fly To The Stars_Full","mix_id":"1","remix_capable":"0","duration":"00:02:15","tempo":"110","description":"Beautiful delicate & calm composition for Piano & strings.","tempo_type_id":"2","song_key":"CM","meter":"4/4","copyright_number":"Dean James Wagg","is_public_domain":"0","time_period_id":"1","isrc_no":"","pro_song_reg_no":"","is_exclusive":"0","project_song_id":"270","project_id":"23","comments":"flying is good"},
           {"song_id":"6","snippet_file": "3OR4TIMESSNIP.mp3", "part_number":"50103001","title":"Now I Lay Me Down_Full","mix_id":"1","remix_capable":"1","duration":"00:03:17","tempo":"80","description":"Female lead vocal, a prayer, hip beat with guitar & synth pad","tempo_type_id":"2","song_key":"AbM","meter":"4/4","copyright_number":"SRu559-370","is_public_domain":"0","time_period_id":"1","isrc_no":null,"pro_song_reg_no":null,"is_exclusive":"1","project_song_id":"268","project_id":"23","comments":"Good for the first song."}]
         }
+      */
 
     },
     deleteProject(project) {
@@ -154,13 +165,25 @@ export default {
         footerBgVariant:"dark",
         footerTextVariant:"light",
       }).then((value) => {
-            console.debug(value);
-            //this.boxOne = value
+            if (!value) {
+              return;
+            }
+
+            ApiService.deleteProject(project.project_id).then(() => {
+              this.projectsList = this.projectsList.filter(p => p.project_id !== project.project_id);
+            })
+
+            //this.projectsList = this.projectsList.filter(p => p.project_id !== project.project_id);
           })
           .catch(() => {
             // An error occurred
           })
 
+    },
+    onSongDeleted(deletedSong) {
+      this.selectedProject.songs = this.selectedProject.songs.filter(
+        song => song.project_song_id !== deletedSong.project_song_id)
+      ;
     },
     ...mapActions("search", ["searchFromQueryParams", "loadSearchLookups", "setSearchData"]),
   },

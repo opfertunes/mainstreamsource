@@ -29,7 +29,13 @@ const apiClient = axios.create({
    maxContentLength: 50 * 1000 * 1000
 });
 
-
+const phpRequestHeaders =  {
+   "accept": "*/*",
+   "accept-language": "en-US,en;q=0.9,fr;q=0.8",
+   "cache-control": "no-cache",
+   "content-type": "application/json",
+   "pragma": "no-cache",
+ }
 
 // Sets the AUTH token for any request. Unused, but here for reference
 
@@ -80,10 +86,41 @@ export default {
         
       return apiClient.get("/cgi-bin/services/mss_data_service.pl", {params:{service: 'get_song_detail',
                                          song_id: songId }});
-  },
+   },
 
-  getProjects(){
-     return apiClient.get("/ajax_projects.php", {params: {'Action': 'project_list'}});
-  }
+   getProjects(){
+     return fetch("/ajax_projects.php", {
+          method: "POST",
+          headers: phpRequestHeaders,
+          body: JSON.stringify({Action:"project_list"})
+       }).then((result) => result.json());
+   },
+
+   getProjectDetails(projectId) {
+      return fetch("/ajax_projects.php", {
+           method: "POST",
+           headers: phpRequestHeaders,
+           body: JSON.stringify({Action:"project_data", project_id: projectId})
+       })
+       .then((result) => result.json());
+   },
+   deleteProject(projectId) {
+      return fetch("/ajax_projects.php", {
+                   method: "POST",
+                   headers: phpRequestHeaders,
+                   body: JSON.stringify({Action:"delete_project", project_id: projectId})
+      })
+      .then((result) => result.json());
+   },
+   deleteSongFromProject(projectSongId, projectId) {
+      return fetch("/ajax_projects.php", {
+         method: "POST",
+         headers: phpRequestHeaders,
+         body: JSON.stringify({Action:"delete_song_from_project", project_id: projectId, project_song_id: projectSongId})
+      })
+      .then((result) => result.json());
+   }
+
+
 
 };
