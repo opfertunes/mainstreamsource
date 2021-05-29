@@ -1,6 +1,6 @@
 <template>
   <div>
-          <div
+    <div
         class="d-block d-md-flex podcast-entry bg-white mb-5 main-song-container"
         v-for="(song, index) in songs"
         :key="index"
@@ -45,7 +45,12 @@
 
                 <span class="action-icon info-icons" v-if="project">
                 <i class="fa fa-times-circle" aria-hidden="true"
-                    v-on:click="deleteSong(song)"></i>
+                    v-on:click="deleteSongFromProject(song)"></i>
+                </span>
+
+                <span class="action-icon info-icons" v-if="!project && isAuthenticated">
+                <i class="fa fa-plus-square" aria-hidden="true"
+                    v-on:click="addSongToProject(song)"></i>
                 </span>
                             
             </h3>
@@ -136,6 +141,34 @@
         
         </div>
     </b-modal>  
+    
+    <b-modal 
+      id="addToProjectDialog" 
+      ref="addToProjectDialog" 
+      centered
+      variant="dark"
+      header-class="track-detail-header"
+      header-bg-variant="dark"
+      header-text-variant="light"
+      body-bg-variant="dark"
+      body-text-variant="light"
+      footer-bg-variant="dark"
+      footer-text-variant="light"
+      :ok-disabled="!selectedProjectId"
+      @ok="onAddSongToProject"> 
+      <template #modal-header="{cancel }">
+          <h5 class="modal-title">Add {{selectedSong.title}} to a Project</h5>
+          <button @click="cancel()" type="button" aria-label="Close" class="close text-light">×</button>
+      </template>
+      <div class="row">
+        <div class="col">
+          <div>{{selectedProjectId}}</div>
+          <b-form-select v-model="selectedProjectId" :options="selectProjectOptions"></b-form-select>
+        </div>
+
+      </div>  
+
+    </b-modal>  
 
   </div>            
 </template>
@@ -152,7 +185,8 @@ export default {
   props: {
     songs: Array,
     coverArtUrl: String,
-    project: Object,
+    project: {type: Object, default: null},
+    userProjects: {type: Array, default: () => []}
   },
   data() {
     return {
@@ -160,10 +194,15 @@ export default {
       player: null,
       pause: false,
       songDialogData: null,
+      // for "add to project":
+      selectedSong: null,
+      selectedProjectId: null,
     };
   },
   created() {
-      console.debug({playIndex: this.playIndex})
+      console.debug({playIndex: this.playIndex,
+                     project: this.project,
+                     userProjects: this.userProjects})
   },
   methods: {
     playMusic: function(i) {
@@ -235,7 +274,7 @@ export default {
     onModalClosed: function() {
       this.songDialogData = null;
     },
-    deleteSong: function(song) {
+    deleteSongFromProject: function(song) {
         this.$bvModal.msgBoxConfirm(`Remove song "${song.title}" from your project?`, {
         title: 'Please Confirm',
         size: 'lg',
@@ -257,21 +296,73 @@ export default {
       }).then((value) => {
           if (!value) {
             return;
-          }      
-          ApiService.deleteSongFromProject(song.project_song_id, this.project.project_id)
-          .then(() => {
+          }    
+          if (process.env.VUE_APP_FAKE_PROJECT_CALLS !== "true") {  
+            ApiService.deleteSongFromProject(song.project_song_id, this.project.project_id)
+            .then(() => {
+              this.$emit("songDeleted", song);
+            })
+          } else {
             this.$emit("songDeleted", song);
-          })
-          //this.$emit("songDeleted", song);
-            
+          }  
       })
       .catch(() => {
             // An error occurred
       })
+    },
+    addSongToProject: function(song) {
+      this.selectedSong = song;
+      this.selectedProjectId = null;
+
+      this.$bvModal.show("addToProjectDialog")
+    },
+    onAddSongToProject: function() {
+      if (!this.selectedSong || !this.selectedProjectId) {
+        return; 
+      } 
+      if (process.env.VUE_APP_FAKE_PROJECT_CALLS !== "true") {  
+        ApiService.AddSongToProject(this.selectedSong.song_id, this.selectedProjectId)
+          .then(() => {
+            //this.$emit("songDeleted", song);
+          })
+        } else {
+          console.debug("AddSongToProject: ", {songId: this.selectedSong.song_id, projectId: this.selectedProjectId})
+          //this.$emit("songDeleted", song);
+          // You are able to access plugin from everywhere via this.$toastr
+
+          this.$toastr.s(
+            `Song "${this.selectedSong.title}" added to project "${this.selectedProjectName}"`
+          );
+        }  
+
+
     }
     //...mapActions("search", ["loadSearchLookups", "setSearchData"]),
   },
   computed: {
+    selectProjectOptions: function() {
+      const result = [
+        {
+          value: null,
+          text: "** Select project **",
+        }  
+      ]
+      this.userProjects.forEach(p => {
+        result.push( {
+          value: p.project_id,
+          text: p.name,
+        });
+      })
+      return result;
+    },
+    selectedProjectName: function() {
+      if (!this.selectedProjectId){
+        return null;
+      }
+      const theProject = this.userProjects.find(p => p.project_id === this.selectedProjectId);
+      return theProject ? theProject.name : null;
+
+    },
     ...mapState("search", [ "genres", 
                            "cdCategories",
                            "cds", 

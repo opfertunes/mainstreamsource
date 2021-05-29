@@ -7,7 +7,7 @@
 <script>
 import BaseLayoutCover from "./../layouts/BaseLayoutCover";
 import genres from "./../../data/genre.json";
-import { HomePageJs } from "./../libs/HomePageJs";
+//import { HomePageJs } from "./../libs/HomePageJs";
 
 export default {
   name: "HomePage",
@@ -21,9 +21,9 @@ export default {
     return { genres, selected: -1 };
   },
   mounted() {
-    setTimeout(() => {
-      HomePageJs();
-    }, 1000);
+    //setTimeout(() => {
+    //  HomePageJs();
+    //}, 1000);
   },
   methods: {
     openBox: function(index) {

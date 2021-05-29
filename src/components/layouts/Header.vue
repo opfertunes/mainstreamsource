@@ -33,8 +33,12 @@
         
         <b-nav-item v-if="!isAuthenticated" 
             href="https://mainstreamsource.com/login.php?redirect_to=/newvue/">Login</b-nav-item>
+        
         <b-nav-item v-if="isAuthenticated" 
-            href="https://mainstreamsource.com/login.php?Action=logout&amp;redirect_to=/newvue/">Logout</b-nav-item>     
+            to="/projects">My Projects</b-nav-item>     
+
+        <b-nav-item v-if="isAuthenticated" 
+            to="https://mainstreamsource.com/login.php?Action=logout&amp;redirect_to=/newvue/">Logout</b-nav-item>     
 
        
       </b-navbar-nav>

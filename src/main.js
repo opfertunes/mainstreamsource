@@ -11,6 +11,7 @@ import 'vue-sidebar-menu/dist/vue-sidebar-menu.css';
 import store from '@/store';
 import { publicPath } from '../vue.config'
 import BootstrapVue from "bootstrap-vue";
+import VueToastr from "vue-toastr";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-vue/dist/bootstrap-vue.css";
 
@@ -29,6 +30,7 @@ Vue.component("v-select", vSelect);
 Vue.use(VueRouter);
 Vue.use(BootstrapVue);
 Vue.use(VueSidebarMenu);
+Vue.use(VueToastr);
 
 Vue.directive("click-outside", {
     bind: function (el, binding, vnode) {
@@ -130,4 +132,7 @@ new Vue({
     store,
     router,
     render: (h) => h(App),
+    mounted() {
+        this.$toastr.defaultPosition = "toast-top-center";
+    }
 }).$mount("#app");

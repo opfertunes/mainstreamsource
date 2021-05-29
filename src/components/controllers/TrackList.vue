@@ -53,7 +53,7 @@
 
             </div>
             <div class="col-md-9" v-if="searchResults">
-              <song-list :songs="searchResults" :coverArtUrl="coverArtUrl" />
+              <song-list :songs="searchResults" :coverArtUrl="coverArtUrl" :userProjects="userProjects"/>
             </div>
           </div>
         </div>
@@ -63,6 +63,7 @@
 </template>
 
 <script>
+import ApiService from "@/api/ApiService"
 import BaseLayoutCommon from "./../layouts/BaseLayoutCommon";
 import SongList from "@/components/SongList";
 import {mapState, mapGetters, mapActions} from "vuex";
@@ -76,7 +77,7 @@ export default {
   },
   props: {},
   data() {
-    return {};
+    return {userProjects: []};
   },
   created() {
     // TODO: this page should be able to handle any search type (genre/keyword etc)
@@ -85,6 +86,18 @@ export default {
     // if we have not called this page from BaseLayoutCover, then
     // this is a full page load and we need to initialize the search data here: 
     this.searchFromQueryParams(this.$route.query);
+
+    if (process.env.VUE_APP_FAKE_PROJECT_CALLS !== "true") {
+      ApiService.getProjects().then((result) => {
+        this.userProjects = result;
+      })
+    } else {
+      this.userProjects = [
+        {"project_id":"23","name":"Filmy Cue 1","description":"dark, brooding","song_count":"7"},
+        {"project_id":"31","name":"foo proj","description":"desc","song_count":"0"},
+        {"project_id":"30","name":"Reboot","description":"Next Level","song_count":"0"}
+      ];
+    }
 
   },
   methods: {
