@@ -90,6 +90,11 @@ export default {
     if (process.env.VUE_APP_FAKE_PROJECT_CALLS !== "true") {
       ApiService.getProjects().then((result) => {
         this.userProjects = result;
+      }).catch((err) => {
+        this.userProjects = [];
+        this.$toastr.e(
+          `Error loading Projects: ${err.message}`
+        );
       })
     } else {
       this.userProjects = [

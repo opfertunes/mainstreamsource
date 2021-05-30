@@ -112,7 +112,11 @@ export default {
     if (process.env.VUE_APP_FAKE_PROJECT_CALLS !== "true") {
       ApiService.getProjects().then((result) => {
         this.projectsList = result;
-      })
+      }).catch((err) => {
+        this.$toastr.e(
+          `Error loading projects: ${err.message}`
+        );
+      });
     } else {
       this.projectsList = [
         {"project_id":"23","name":"Filmy Cue 1","description":"dark, brooding","song_count":"7"},
@@ -126,11 +130,15 @@ export default {
   },
   methods: {
     setSelectedProject(project) {
-
+      
       if (process.env.VUE_APP_FAKE_PROJECT_CALLS !== "true") {
         ApiService.getProjectDetails(project.project_id).then((result) => {
-        console.debug("project data: ", result)
         this.selectedProject = JSON.parse(JSON.stringify(result));
+      }).catch((err) => {
+        this.selectedProject = null;
+        this.$toastr.e(
+          `Error loading project details: ${err.message}`
+        );
       })
       
       } else {
@@ -178,6 +186,10 @@ export default {
             if (process.env.VUE_APP_FAKE_PROJECT_CALLS !== "true") {
               ApiService.deleteProject(project.project_id).then(() => {
                 this.projectsList = this.projectsList.filter(p => p.project_id !== project.project_id);
+              }).catch((err) => {
+                this.$toastr.e(
+                  `Error deleting project: ${err.message}`
+                );
               })
 
             } else {

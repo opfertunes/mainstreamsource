@@ -54,6 +54,16 @@ apiClient.interceptors.request.use(function(config) {
 });
 */
 
+const processPhpFetchResult = function(result) {
+   if (result.status >= 200 && result.status < 400) {
+      return result.json()
+   } else if (result.status >= 400 && result.status < 500){
+      throw new Error(result.json()); 
+   } else {
+      throw new Error({message: "Unexpected server error"}); 
+   } 
+}
+
 export default {
     /**
     * loads basically the entire database... 
@@ -87,22 +97,24 @@ export default {
       return apiClient.get("/cgi-bin/services/mss_data_service.pl", {params:{service: 'get_song_detail',
                                          song_id: songId }});
    },
-
    getProjects(){
      return fetch("/ajax_projects.php", {
           method: "POST",
           headers: phpRequestHeaders,
           body: JSON.stringify({Action:"project_list"})
-       }).then((result) => result.json());
+       }).then((result) => {
+         return processPhpFetchResult(result);
+      });
    },
-
    getProjectDetails(projectId) {
       return fetch("/ajax_projects.php", {
            method: "POST",
            headers: phpRequestHeaders,
            body: JSON.stringify({Action:"project_data", project_id: projectId})
        })
-       .then((result) => result.json());
+       .then((result) => {
+         return processPhpFetchResult(result); 
+      });
    },
    deleteProject(projectId) {
       return fetch("/ajax_projects.php", {
@@ -110,7 +122,9 @@ export default {
                    headers: phpRequestHeaders,
                    body: JSON.stringify({Action:"delete_project", project_id: projectId})
       })
-      .then((result) => result.json());
+      .then((result) => {
+         return processPhpFetchResult(result);
+      });
    },
    deleteSongFromProject(projectSongId, projectId) {
       return fetch("/ajax_projects.php", {
@@ -118,9 +132,18 @@ export default {
          headers: phpRequestHeaders,
          body: JSON.stringify({Action:"delete_song_from_project", project_id: projectId, project_song_id: projectSongId})
       })
-      .then((result) => result.json());
-   }
-
-
-
+      .then((result) => {
+         return processPhpFetchResult(result);
+      });
+   },
+   addSongToProject(songId, projectId) {
+      return fetch("/ajax_projects.php", {
+         method: "POST",
+         headers: phpRequestHeaders,
+         body: JSON.stringify({Action:"add_song_to_project", project_id: projectId, song_id: songId})
+      })
+      .then((result) => {
+         return processPhpFetchResult(result);
+      });
+   },
 };

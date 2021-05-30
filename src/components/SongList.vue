@@ -301,6 +301,10 @@ export default {
             ApiService.deleteSongFromProject(song.project_song_id, this.project.project_id)
             .then(() => {
               this.$emit("songDeleted", song);
+            }).catch((err) => {
+              this.$toastr.e(
+                `Error deleting song from project: ${err.message}`
+              );
             })
           } else {
             this.$emit("songDeleted", song);
@@ -320,24 +324,26 @@ export default {
       if (!this.selectedSong || !this.selectedProjectId) {
         return; 
       } 
+      console.debug("AddSongToProject: ", {songId: this.selectedSong.song_id, projectId: this.selectedProjectId});
+
       if (process.env.VUE_APP_FAKE_PROJECT_CALLS !== "true") {  
-        ApiService.AddSongToProject(this.selectedSong.song_id, this.selectedProjectId)
+        ApiService.addSongToProject(this.selectedSong.song_id, this.selectedProjectId)
           .then(() => {
-            //this.$emit("songDeleted", song);
+            this.$toastr.s(
+               `Song "${this.selectedSong.title}" added to project "${this.selectedProjectName}"`
+            );
+          })
+          .catch((err) => {
+            this.$toastr.e(
+               `Error adding song to project: ${err.message}`
+            );
           })
         } else {
-          console.debug("AddSongToProject: ", {songId: this.selectedSong.song_id, projectId: this.selectedProjectId})
-          //this.$emit("songDeleted", song);
-          // You are able to access plugin from everywhere via this.$toastr
-
           this.$toastr.s(
             `Song "${this.selectedSong.title}" added to project "${this.selectedProjectName}"`
           );
         }  
-
-
     }
-    //...mapActions("search", ["loadSearchLookups", "setSearchData"]),
   },
   computed: {
     selectProjectOptions: function() {
