@@ -114,7 +114,7 @@ export default {
         this.projectsList = result;
       }).catch((err) => {
         this.$toastr.e(
-          `Error loading projects: ${err.message}`
+          `Error loading projects: ${err}`
         );
       });
     } else {
@@ -137,7 +137,7 @@ export default {
       }).catch((err) => {
         this.selectedProject = null;
         this.$toastr.e(
-          `Error loading project details: ${err.message}`
+          `Error loading project details: ${err}`
         );
       })
       
@@ -188,7 +188,7 @@ export default {
                 this.projectsList = this.projectsList.filter(p => p.project_id !== project.project_id);
               }).catch((err) => {
                 this.$toastr.e(
-                  `Error deleting project: ${err.message}`
+                  `Error deleting project: ${err}`
                 );
               })
 

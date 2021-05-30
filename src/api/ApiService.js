@@ -54,16 +54,26 @@ apiClient.interceptors.request.use(function(config) {
 });
 */
 
-const processPhpFetchResult = function(result) {
-   if (result.status >= 200 && result.status < 400) {
-      return result.json()
-   } else if (result.status >= 400 && result.status < 500){
-      throw new Error(result.json()); 
-   } else {
-      throw new Error({message: "Unexpected server error"}); 
-   } 
+const wrapPhpFetch = function(path, data) {
+   return new Promise((resolve, reject) => {
+      fetch(path, data).then((result) => {
+         
+         if (result.status >= 200 && result.status < 400) {
+            result.json().then(rJson => resolve(rJson));
+         } else if (result.status >= 400 && result.status < 500){
+            result.json()
+            .then(rJson => reject(rJson.message || `Server error ${result.status}`))
+            .catch(() => reject(`Server error ${result.status}`));
+         } else {
+            result.json()
+            .then(rJson => reject(rJson.message || `Server error ${result.status}`))
+            .catch(() => reject(`Server error ${result.status}`));
+         } 
+      }).catch((err) => {
+         reject(err);
+      })
+   })
 }
-
 export default {
     /**
     * loads basically the entire database... 
@@ -98,52 +108,38 @@ export default {
                                          song_id: songId }});
    },
    getProjects(){
-     return fetch("/ajax_projects.php", {
-          method: "POST",
-          headers: phpRequestHeaders,
-          body: JSON.stringify({Action:"project_list"})
-       }).then((result) => {
-         return processPhpFetchResult(result);
-      });
+      return wrapPhpFetch("/ajax_projects.php", {
+         method: "POST",
+         headers: phpRequestHeaders,
+         body: JSON.stringify({Action:"project_list"})
+      })
    },
    getProjectDetails(projectId) {
-      return fetch("/ajax_projects.php", {
+      return wrapPhpFetch("/ajax_projects.php", {
            method: "POST",
            headers: phpRequestHeaders,
            body: JSON.stringify({Action:"project_data", project_id: projectId})
-       })
-       .then((result) => {
-         return processPhpFetchResult(result); 
-      });
+       });
    },
    deleteProject(projectId) {
-      return fetch("/ajax_projects.php", {
+      return wrapPhpFetch("/ajax_projects.php", {
                    method: "POST",
                    headers: phpRequestHeaders,
                    body: JSON.stringify({Action:"delete_project", project_id: projectId})
       })
-      .then((result) => {
-         return processPhpFetchResult(result);
-      });
    },
    deleteSongFromProject(projectSongId, projectId) {
-      return fetch("/ajax_projects.php", {
+      return wrapPhpFetch("/ajax_projects.php", {
          method: "POST",
          headers: phpRequestHeaders,
          body: JSON.stringify({Action:"delete_song_from_project", project_id: projectId, project_song_id: projectSongId})
       })
-      .then((result) => {
-         return processPhpFetchResult(result);
-      });
    },
    addSongToProject(songId, projectId) {
-      return fetch("/ajax_projects.php", {
+      return wrapPhpFetch("/ajax_projects.php", {
          method: "POST",
          headers: phpRequestHeaders,
          body: JSON.stringify({Action:"add_song_to_project", project_id: projectId, song_id: songId})
-      })
-      .then((result) => {
-         return processPhpFetchResult(result);
       });
    },
 };

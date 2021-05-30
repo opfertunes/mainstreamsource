@@ -93,7 +93,7 @@ export default {
       }).catch((err) => {
         this.userProjects = [];
         this.$toastr.e(
-          `Error loading Projects: ${err.message}`
+          `Error loading Projects: ${err}`
         );
       })
     } else {

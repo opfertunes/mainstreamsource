@@ -303,7 +303,7 @@ export default {
               this.$emit("songDeleted", song);
             }).catch((err) => {
               this.$toastr.e(
-                `Error deleting song from project: ${err.message}`
+                `Error deleting song from project: ${err}`
               );
             })
           } else {
@@ -315,12 +315,15 @@ export default {
       })
     },
     addSongToProject: function(song) {
+      
       this.selectedSong = song;
       this.selectedProjectId = null;
 
       this.$bvModal.show("addToProjectDialog")
     },
-    onAddSongToProject: function() {
+    onAddSongToProject: function(event) {
+      event.preventDefault();
+
       if (!this.selectedSong || !this.selectedProjectId) {
         return; 
       } 
@@ -332,16 +335,24 @@ export default {
             this.$toastr.s(
                `Song "${this.selectedSong.title}" added to project "${this.selectedProjectName}"`
             );
+            // Hide the modal manually
+            this.$nextTick(() => {
+              this.$bvModal.hide('addToProjectDialog');
+            })
           })
           .catch((err) => {
             this.$toastr.e(
-               `Error adding song to project: ${err.message}`
+               `Error adding song to project: ${err}`
             );
           })
         } else {
           this.$toastr.s(
             `Song "${this.selectedSong.title}" added to project "${this.selectedProjectName}"`
           );
+          // Hide the modal manually
+          this.$nextTick(() => {
+            this.$bvModal.hide('addToProjectDialog');
+          })
         }  
     }
   },
