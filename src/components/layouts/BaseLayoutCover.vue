@@ -5,7 +5,7 @@
       <div
         class="site-blocks-cover overlay"
         :style="{
-          backgroundImage: `url(${require(`@/assets/images/hero_bg_1.jpg`)})`,
+          backgroundImage: `url(${require(`@/assets/images/bobby-johnson-swCOXlxmr5U-unsplash.jpg`)})`,
         }"
       >
         <div class="container-fluid">
