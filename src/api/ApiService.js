@@ -142,4 +142,16 @@ export default {
          body: JSON.stringify({Action:"add_song_to_project", project_id: projectId, song_id: songId})
       });
    },
+   createOrUpdateProject(project) {
+      return wrapPhpFetch("/ajax_projects.php", {
+         method: "POST",
+         headers: phpRequestHeaders,
+         body: JSON.stringify({
+            Action:project.project_id ? "update_project" : "create_new_project", 
+            name: project.name, 
+            description: project.description,
+            project_id: project.project_id || null
+         })
+      });
+   }
 };

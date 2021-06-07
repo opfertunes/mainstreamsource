@@ -28,7 +28,7 @@
                     <th>Name</th>
                     <th>Description</th>
                     <th># Songs</th>
-                    <th></th>
+                    <th><b-button variant="primary" @click="newProjectDialog">Add new project...</b-button> </th>
                   </thead>
                   <tbody>
                     <tr v-for="project in projectsList" :key="project.project_id">
@@ -55,7 +55,10 @@
               <div class="col" v-if="selectedProject">
                 <div class="row">
                   <div class="col text-center">
-                    <h1>{{selectedProject.name}}</h1>
+                    <h1>{{selectedProject.name}}   
+                        <b-button class="pl-4" variant="primary" @click="editProjectDialog">Edit project...</b-button>
+                    </h1>
+                    
                   </div>
                 </div>
                 <div class="row">
@@ -79,7 +82,7 @@
       </template>
     </BaseLayoutCommon>
 
-
+    <project-dialog ref="projectDialog" :project="editedProject" @projectSaved="onProjectSaved"/>
   </div>
 </template>
 
@@ -88,14 +91,15 @@
 import BaseLayoutCommon from "./../layouts/BaseLayoutCommon";
 import ApiService from "@/api/ApiService";
 import SongList from "@/components/SongList";
+import ProjectDialog from "@/components/ProjectDialog";
 import {mapState, mapGetters, mapActions} from "vuex";
-//import $ from "jquery";
 
 export default {
   name: "Projects",
   components: {
     BaseLayoutCommon,
     SongList,
+    ProjectDialog,
   },
   props: {
     msg: String,
@@ -106,6 +110,7 @@ export default {
       errorMessage: null,
       projectsList: [],
       selectedProject: null,
+      editedProject: null,
     };
   },
   created() {
@@ -124,9 +129,6 @@ export default {
         {"project_id":"30","name":"Reboot","description":"Next Level","song_count":"0"}
       ];
     }
-
-
-
   },
   methods: {
     setSelectedProject(project) {
@@ -200,6 +202,30 @@ export default {
             // An error occurred
           })
 
+    },
+    newProjectDialog() {
+      this.editedProject = null;
+      this.$nextTick(function () {
+        this.$refs["projectDialog"].$children[0].show();
+      });
+    },
+    editProjectDialog() {
+      this.editedProject = this.selectedProject;
+      this.$nextTick(function () {
+        this.$refs["projectDialog"].$children[0].show();
+      });
+    },
+    onProjectSaved(project) {
+      if (project && project.project_id) {
+        const projectIndex = this.projectsList.findIndex(p => p.project_id == project.project_id);
+        if (projectIndex < 0) {
+          this.projectsList.push(project);
+        } else {
+          this.projectsList.splice(projectIndex, 1, project);
+        }
+      }
+
+      this.editedProject = null;
     },
     onSongDeleted(deletedSong) {
       this.selectedProject.songs = this.selectedProject.songs.filter(
