@@ -26,7 +26,7 @@
 
               <ul class="site-menu js-clone-nav d-none d-lg-block">
                 <li class="active">
-                  <router-link to="/">Home</router-link>
+                  <router-link to="/">Homer</router-link>
                 </li>
                 <li>
                   <router-link to="/">Main</router-link>
@@ -42,7 +42,7 @@
                 </li>
                 <li>
                   <a v-if="!isAuthenticated" 
-                     href="https://mainstreamsource.com/login.php?redirect_to=/newvue/">Login</a>
+                     href="https://mainstreamsource.com/login.php?redirect_to=/newvue/">Loginn</a>
 
                   <a v-if="isAuthenticated" 
                      href="https://mainstreamsource.com/login.php?Action=logout&redirect_to=/newvue/">Logout</a>   

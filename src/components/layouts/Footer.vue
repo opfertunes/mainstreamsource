@@ -5,10 +5,7 @@
         <div class="col-lg-4">
           <div class="mb-1">
             <h3 class="footer-heading mb-4">
-              About Mainstream
-              <span class="text-primary">
-                <i class="fa fa-headphones" aria-hidden="true"></i> </span
-              >&nbsp;Source
+              About Mainstream Source
             </h3>
             <p>
               Mainstream Source is dedicated to providing the finest production
@@ -23,7 +20,7 @@
 
         <div class="col-lg-4 mb-1 mb-lg-0">
           <div class="mb-1">
-            <h3 class="footer-heading mb-4">Subscribe</h3>
+            <h3 class="footer-heading mb-4">Sign Up</h3>
             <form action="#" method="post" class="site-block-subscribe">
               <div class="input-group mb-3">
                 <input
@@ -103,10 +100,7 @@
       <div class="row pt-1 mt-1 text-center">
         <div class="col-md-12">
           <p>
-            Copyright &copy; 2020 All rights reserved | Mainstream
-            <span class="text-primary">
-              <i class="fa fa-headphones" aria-hidden="true"></i> </span
-            >&nbsp;Source
+            Copyright &copy; 2021 All rights reserved | Mainstream Source
           </p>
         </div>
       </div>
