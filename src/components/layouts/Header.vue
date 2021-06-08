@@ -30,13 +30,13 @@
         <b-nav-item href="https://mainstreamsource.com/news/">News</b-nav-item> 
         <b-nav-item href="#">Contact</b-nav-item> 
         <b-nav-item v-if="!isAuthenticated" 
-            href="https://mainstreamsource.com/login.php?redirect_to=/newvue/">Login</b-nav-item>
+            href="https://mainstreamsource.com/login.php?redirect_to=/licensing/">Login</b-nav-item>
         
         <b-nav-item v-if="isAuthenticated" 
             to="/projects">My Projects</b-nav-item>     
 
         <b-nav-item v-if="isAuthenticated" 
-            to="https://mainstreamsource.com/login.php?Action=logout&amp;redirect_to=/newvue/">Logout</b-nav-item>     
+            to="https://mainstreamsource.com/login.php?Action=logout&amp;redirect_to=/licensing/">Logout</b-nav-item>     
 
        
       </b-navbar-nav>

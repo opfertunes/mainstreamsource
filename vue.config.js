@@ -5,9 +5,9 @@ module.exports = {
     // in production we load the Vue subsite under /newvue
     // see also the Vue.Router init in main.js (which sets its base: from here)
     publicPath: process.env.NODE_ENV === 'production'
-      ? '/newvue'
+      ? '/licensing'
       : '/',
     outputDir: process.env.NODE_ENV === 'production'
-      ? 'newvue'
+      ? 'licensing'
       : 'dist'  
 }

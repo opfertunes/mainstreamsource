@@ -3,9 +3,9 @@ node_modules
 
 # build folders:
 /dist
-/newvue
+/licensing
 dist.zip
-newvue.zip
+licensing.zip
 
 # local env files
 .env.local
