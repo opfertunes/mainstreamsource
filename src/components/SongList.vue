@@ -20,7 +20,7 @@
                 <i
                     class="fa fa-pause"
                     aria-hidden="true"
-                    v-on:click="stopMusic()"
+                    v-on:click="pauseMusic()"
                     v-if="playIndex == index && !pause"
                 ></i>
                 </span>
@@ -206,7 +206,7 @@ export default {
   },
   methods: {
     playMusic: function(i) {
-      if (this.player && this.pause) {
+      if (this.player && this.pause && i === this.playIndex) {
         this.player.playPause();
         this.pause = false;
         return;
@@ -246,10 +246,11 @@ export default {
         
       }, 500);
     },
-    stopMusic: function() {
-      this.player.playPause();
-      this.pause = true;
-      //this.playIndex = -1;
+    pauseMusic: function() {
+      if (this.player && !this.pause) {
+        this.player.playPause();
+        this.pause = true;
+      }
     },
     showSongInfo: function(song) {
       this.songDialogData = null;
@@ -391,6 +392,19 @@ export default {
     if (this.player) {
       this.player.stop();
     }
+  },
+  watch: {
+    project() {
+      console.debug("project changed")
+      this.playMusic(-1);
+
+    },
+    userProjects() {
+      console.debug("userProjects changed")
+      this.playMusic(-1);
+
+    }
+    
   }
 };
 </script>
