@@ -52,7 +52,7 @@
                 </div>
 
             </div>
-            <div class="col-md-9" v-if="searchResults">
+            <div :class="songListColumnClass" v-if="searchResults">
               <song-list :songs="searchResults" :coverArtUrl="coverArtUrl" :userProjects="userProjects"/>
             </div>
           </div>
@@ -116,6 +116,11 @@ export default {
     currentCd: function() {
       return this.searchData.cds && this.searchData.cds.length ?
         this.searchData.cds[0] : null; 
+    },
+    songListColumnClass: function() {
+
+      return `col-md-${ !this.searchData || !this.searchData.cds ? 12 : 9  }`; 
+
     },
 
     ...mapState("search", ["searchResults", 

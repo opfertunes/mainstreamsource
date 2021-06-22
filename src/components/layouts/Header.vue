@@ -3,7 +3,7 @@
 
   <b-navbar toggleable="lg" type="dark" fixed="top" variant="dark" :sticky="true">
    
-<img id="header-logo" src="@/assets/images/mss-logo.png" alt="mainstream source logo" />
+<img id="header-logo" src="@/assets/images/mss-logo.png" alt="mainstream source logo" @click="goHome"/>
     <left-side-bar 
         :props-is-collapsed="collapse" 
         @toggle-sidebar="toggleSidebar">
@@ -65,6 +65,9 @@ export default {
     this.loadAuthUserData();
   },
   methods: {
+    goHome() {
+      this.$router.push("/");
+    },
     toggleSidebar(isCollapsed) {
       this.collapse = isCollapsed;
     },
