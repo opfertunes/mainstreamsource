@@ -24,18 +24,20 @@
               <div class="input-group mb-4 search-box">
                 <v-select
                   class="form-control mr-2"
-                  placeholder="Search for any Genre"
+                  :placeholder="loadingSearch ? 'Loading genres...' : 'Search for any genre'"
                   :options="genres"
                   label="description"
                   v-model="selectedGenre"
                   @input="setSelectedGenre"
                   :disabled="loadingSearch"
                 ></v-select>
-                 <div v-if="loadingSearch" class="d-flex justify-content-center mt-2 mb-3">
-                    <em>Loading...</em>
-                 </div>
 
+          
+                 <b-button variant="primary" @click="showSearchDialog">Advanced search...</b-button>
+
+                 
               </div>
+              
             </div>
           </div>
         </div>
@@ -45,12 +47,14 @@
 
       <Footer></Footer>
     </div>
+    <search-dialog ref="searchDialog"/>
   </div>
 </template>
 
 <script>
 import Header from "./Header";
 import Footer from "./Footer";
+import SearchDialog from "@/components/SearchDialog";
 
 import {mapActions, mapState} from "vuex";
 
@@ -59,6 +63,7 @@ export default {
   components: {
     Header,
     Footer,
+    SearchDialog,
   },
   props: {},
   data() {
@@ -91,6 +96,13 @@ export default {
       this.$router.push(`/tracks?genre=${this.selectedGenre.genre_id}`);
 
     },
+    showSearchDialog() {
+
+      this.$nextTick(function () {
+        this.$refs["searchDialog"].$children[0].show();
+      });
+    },
+
     ...mapActions("search", ["clearSearch", "loadSearchLookups"]),
   },
   computed: {

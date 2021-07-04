@@ -223,8 +223,7 @@ export const actions = {
             commit("setSearchErrorMessage", "No search criteria were entered")
             return;
         }
-        
-        const searchData = {}
+    
         let lookupList, pkName, pk, storeKey, description;
 
         if (queryParams.genre) {
@@ -250,6 +249,13 @@ export const actions = {
             storeKey = "cds";
             description = "CD"
         }
+        else if (queryParams.keywords) {
+            pk = queryParams.keywords;
+            lookupList = state.keywords;
+            pkName = "keyword_id";
+            storeKey = "keywords";
+            description = "Keywords"
+        }
 
         if (!pk || !lookupList || !pkName || !storeKey || !description) {
             commit("setSearchErrorMessage", "Please enter a valid search");
@@ -257,13 +263,37 @@ export const actions = {
             return;
         }
 
-        const searchObj = lookupList.find(obj => String(obj[pkName]) === String(pk));
-        if (!searchObj) {
-            commit("setSearchErrorMessage", `${description} not found for id ${pk}`);
+        const pks = pk.split(",")
+
+        const idsNotFound = []    
+        const searchObjs = [];
+        pks.forEach((thePk) => {
+            const searchObj = lookupList.find(obj => String(obj[pkName]) === String(thePk));
+            if (searchObj) {
+                searchObjs.push(searchObj);
+            } else {
+                idsNotFound.push(thePk);
+            } 
+        })    
+           
+        if (idsNotFound.length) {
+            commit("setSearchErrorMessage", `${description} not found for id(s) ${idsNotFound}`);
             return;
         }
+        
+        const searchData = {};
+        searchData[storeKey] = searchObjs;
 
-        searchData[storeKey] = [searchObj];
+        console.debug(JSON.parse(JSON.stringify({
+                pk,
+                pks,
+                lookupList,
+                pkName,
+                storeKey,
+                description,
+                searchData
+            }))
+        )
 
         await dispatch("setSearchData", searchData);
 

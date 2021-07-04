@@ -9,7 +9,7 @@
             <h2 v-if="item.title !== 'CD'">
               {{item.title}}
             </h2>
-            <h2 class="ml-4 text-white" v-for="(searchItem, itemIndex) in item.searchItems" :key="itemIndex">
+            <h2 class="text-white" v-for="(searchItem, itemIndex) in item.searchItems" :key="itemIndex">
             {{searchItem}}
             </h2> 
 

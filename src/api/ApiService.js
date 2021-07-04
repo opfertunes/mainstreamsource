@@ -153,5 +153,5 @@ export default {
             project_id: project.project_id || null
          })
       });
-   }
+   },
 };
