@@ -199,11 +199,7 @@ export default {
       selectedProjectId: null,
     };
   },
-  created() {
-      console.debug({playIndex: this.playIndex,
-                     project: this.project,
-                     userProjects: this.userProjects})
-  },
+  created() {},
   methods: {
     playMusic: function(i) {
       if (this.player && this.pause && i === this.playIndex) {
@@ -328,8 +324,6 @@ export default {
       if (!this.selectedSong || !this.selectedProjectId) {
         return; 
       } 
-      console.debug("AddSongToProject: ", {songId: this.selectedSong.song_id, projectId: this.selectedProjectId});
-
       if (process.env.VUE_APP_FAKE_PROJECT_CALLS !== "true") {  
         ApiService.addSongToProject(this.selectedSong.song_id, this.selectedProjectId)
           .then(() => {
@@ -395,16 +389,12 @@ export default {
   },
   watch: {
     project() {
-      console.debug("project changed")
       this.playMusic(-1);
 
     },
     userProjects() {
-      console.debug("userProjects changed")
       this.playMusic(-1);
-
-    }
-    
+    } 
   }
 };
 </script>

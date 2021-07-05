@@ -210,10 +210,6 @@ export default {
       }
     },
     checkMouseOutOfAll() {
-      //console.debug({
-      //  sidebar: this.mouseInSidebar,
-      //  popover: this.mouseInPopover,
-      //})
 
       this.$nextTick(() => {
         if (
@@ -271,13 +267,9 @@ export default {
   },
   watch: {
     usePopoverMenu() {
-        //console.debug({usePopoverMenu: this.usePopoverMenu})
-        //if (!this.usePopoverMenu)
-        //{
-          if (!this.propsIsCollapsed) {
-            this.toggleSidebar(true);
-          }
-        //}
+        if (!this.propsIsCollapsed) {
+          this.toggleSidebar(true);
+        }
         this.updateMouseOverEvents();
     },
     propsIsCollapsed(){

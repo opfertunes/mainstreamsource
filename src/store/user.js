@@ -13,7 +13,6 @@ export function defaultState() {
 export const getters = {
    authData: (state) => state.authData,
    isAuthenticated: (state) => {
-      console.debug(process.env)
       if (process.env.VUE_APP_FAKE_PROJECT_CALLS !== "true") {
          return state.authData && state.authData.customer_id;
       } else {
