@@ -43,6 +43,19 @@
         </div>
       </div>
 
+      <div 
+        v-if="featuredCds.length"
+        class="row pl-5 pr-5 justify-center" 
+        style="min-height:300px;"
+        >
+        <div class="col-12 pt-3 pb-2 text-center">
+             <h2>Featured Playlists</h2>
+        </div>
+        <div class="col-12 pb-4">
+          <featured-c-ds :cdList="featuredCds"/>
+        </div>
+      </div>
+
       <slot></slot>
 
       <Footer></Footer>
@@ -55,6 +68,7 @@
 import Header from "./Header";
 import Footer from "./Footer";
 import SearchDialog from "@/components/SearchDialog";
+import FeaturedCDs from "@/components/FeaturedCDs";
 
 import {mapActions, mapState} from "vuex";
 
@@ -64,6 +78,7 @@ export default {
     Header,
     Footer,
     SearchDialog,
+    FeaturedCDs
   },
   props: {},
   data() {
@@ -106,7 +121,7 @@ export default {
     ...mapActions("search", ["clearSearch", "loadSearchLookups"]),
   },
   computed: {
-     ...mapState("search", ["genres", "loadingSearch"]),
+     ...mapState("search", ["genres", "featuredCds", "loadingSearch"]),
   }
 };
 </script>

@@ -15,6 +15,7 @@ export function defaultState() {
         tempoTypes: [],
         songCategories: [],
         cds: [],
+        featuredCds: [],
         cdCategories: [],
         cdCategoryAssoc: [],
         timePeriods: [],
@@ -150,7 +151,11 @@ export const mutations = {
  
         Object.keys(keys).forEach(key => {
             Vue.set(state, key, data[keys[key]]);
-        });  
+        }); 
+        const allCds = data["cd"] || []; 
+        Vue.set(state, "featuredCds", allCds.filter(cd => {
+            return cd.is_featured === "1" && cd.image_loc;
+        }));
     },
 
     setSearchErrorMessage(state, value) {
@@ -284,19 +289,7 @@ export const actions = {
         const searchData = {};
         searchData[storeKey] = searchObjs;
 
-        console.debug(JSON.parse(JSON.stringify({
-                pk,
-                pks,
-                lookupList,
-                pkName,
-                storeKey,
-                description,
-                searchData
-            }))
-        )
-
         await dispatch("setSearchData", searchData);
-
     },
     clearSearch({commit}) {
         commit("clearSearch");
