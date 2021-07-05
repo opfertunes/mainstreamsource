@@ -30,7 +30,7 @@
             <div class="col-md-6">
             <h3 class="font-weight-light track-info-column">                 
                 <span v-if="isAuthenticated" class="action-icon info-icons">
-                <i class="fa fa-download" aria-hidden="true"></i>
+                   <i @click="downloadTrack(song)" class="fa fa-download" aria-hidden="true"></i>                     
                 </span>
                 <span class="action-icon info-icons bpm-outer">
                 <span class="track-bpm">{{song.tempo}}</span>
@@ -349,7 +349,11 @@ export default {
             this.$bvModal.hide('addToProjectDialog');
           })
         }  
-    }
+    },
+    downloadTrack(song) {
+      const downloadUrl = `https://mainstreamsource.com/download.php?Action=full_track&song_id=${song.song_id}`;
+      window.location.href = downloadUrl;
+    },
   },
   computed: {
     selectProjectOptions: function() {
